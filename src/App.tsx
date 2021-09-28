@@ -2,10 +2,6 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const as = 'asdasdasdasasdasdas';
-
-  const b = '1231232asdaasasdasddasdasdasdd1asfgsdgfsdf';
-
   return (
     <div className='App'>
       <header className='App-header'>
