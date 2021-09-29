@@ -2,7 +2,7 @@ body {
   margin: none;
   background: #e1caca;
 }
-.is-logo {
+.pokemon-logo {
   margin-top: 50px;
   display: flex;
   justify-content: center;
@@ -15,4 +15,9 @@ body {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+.observer-block {
+  border: 1 px solid black;
+  height: 30vh;
+  background-color: black;
 }

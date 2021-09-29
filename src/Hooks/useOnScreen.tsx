@@ -1,21 +1,33 @@
-import { useEffect } from 'react';
-// type Options = {
-//   root: null;
-//   rootMargin: string | undefined;
-//   threshold: number | null;
-// };
-const options = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 1,
+import { MutableRefObject, RefObject, useEffect, useState } from 'react';
+
+type Props = {
+  ref: RefObject<HTMLDivElement> | MutableRefObject<HTMLDivElement>;
 };
 
-function useOnScreen(): void {
-  useEffect(() => {
-    const observer = new IntersectionObserver(() => {
-      console.log('');
-    }, options);
-  }, []);
-}
+const options = {
+  rootMargin: '-200px',
+  // threshold: 0.1,
+};
 
-export default useOnScreen;
+export function useOnScreen({ ref }: Props): boolean {
+  const [isIntersecting, setIntersecting] = useState<boolean>(false);
+  const [observeRefValue, setObserveRefValue] = useState<HTMLDivElement>();
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      console.log(entry.isIntersecting);
+      setIntersecting(entry.isIntersecting);
+    }, options);
+
+    if (ref.current) {
+      observer.observe(ref.current);
+      setObserveRefValue(ref.current);
+    }
+    return () => {
+      if (observeRefValue) {
+        observer.unobserve(observeRefValue);
+      }
+    };
+  }, [ref, observeRefValue]);
+
+  return isIntersecting;
+}
