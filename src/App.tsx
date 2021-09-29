@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import { PokemonCard } from './components/PokemonCard/PokemonCard';
+import { PokemonsData } from './types/PokemonsData';
 
 function App(): JSX.Element {
-  type PokemonsData = { name: string; url: string };
-
   type PokemonsResponse = {
     count: number;
     next: string;
@@ -21,14 +21,16 @@ function App(): JSX.Element {
       });
   }, []);
 
+  // const ref = useRef(null);
+
+  // useOnScreen(ref);
+
   return (
     <div className='App-wrapper'>
-      <span className='is-logo'>infinity-scroll</span>
+      <span className='is-logo'>choose your pokemon!</span>
       <div className='pokemon-cards'>
-        {pokemons?.map((pokemonItem: PokemonsData) => (
-          <div className='pokemon-card' key={pokemonItem.name}>
-            <span className='pokemon-name'>{pokemonItem.name}</span>
-          </div>
+        {pokemons?.map((pokemonItem) => (
+          <PokemonCard pokemonItem={pokemonItem} />
         ))}
       </div>
     </div>
