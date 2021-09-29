@@ -27,7 +27,7 @@ function App(): JSX.Element {
       <div className='pokemon-cards'>
         {pokemons?.map((pokemonItem: PokemonsData) => (
           <div className='pokemon-card' key={pokemonItem.name}>
-            <span>{pokemonItem.name}</span>
+            <span className='pokemon-name'>{pokemonItem.name}</span>
           </div>
         ))}
       </div>
