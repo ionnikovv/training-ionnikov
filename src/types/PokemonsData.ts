@@ -14,5 +14,5 @@ export const isPokemonResponse = (json: unknown): json is PokemonsResponse => {
   return !!json && Boolean((json as PokemonsResponse).count);
 };
 export const isPokemonInfoResponse = (json: unknown): json is PokemonInfo => {
-    return !!json && Boolean((json as PokemonInfo).id);
-  };
+  return !!json && Boolean((json as PokemonInfo).id);
+};
