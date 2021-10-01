@@ -2,46 +2,34 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { PokemonCard } from './components/PokemonCard/PokemonCard';
 import { useOnScreen } from './Hooks/useOnScreen';
-import { PokemonsData } from './types/PokemonsData';
+import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 
-type PokemonsResponse = {
-  count: number;
-  next: string;
-  previous: string;
-  results: PokemonsData[];
-};
+const PAGE_SIZE = 20;
 
 function App(): JSX.Element {
-  const [pokemons, setPokemons] = useState<PokemonsData[]>();
-  const [pokemonsCountLimit, setPokemonsCountLimit] = useState<number>(10);
-  const refObserver = useRef<HTMLDivElement>(null);
-  const onScreen: boolean = useOnScreen({ ref: refObserver });
+  const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
+  const [lastPage, setLastPage] = useState(0);
 
-  // useEffect(() => {
-  //   fetch(`https://pokeapi.co/api/v2/pokemon?limit=${pokemonsCountLimit}&offset=0`)
-  //     .then((response) => response.json())
-  //     .then((response: PokemonsResponse) => {
-  //       setPokemons(response.results);
-  //     });
-  //   console.log(`Startup`);
-  // }, [pokemonsCountLimit]);
+  const refObserver = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (onScreen) {
-      fetch(`https://pokeapi.co/api/v2/pokemon?limit=${pokemonsCountLimit}&offset=0`)
-        .then((response) => response.json())
-        .then((response: PokemonsResponse) => {
-          setPokemons(response.results);
-
-          console.log(`updated`);
-          setPokemonsCountLimit((prevCount) => prevCount + 10);
-          // console.log(`Count of limit ${pokemonsCountLimit}`);
-          // // eslint-disable-next-line no-debugger
-          // debugger;
-        });
+    async function getPokemons() {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${lastPage * PAGE_SIZE}`);
+      const body = (await response.json()) as unknown;
+      if (isPokemonResponse(body)) {
+        setPokemons((prevPokemons) => [...prevPokemons, ...body.results]);
+        console.log('Pokemons were setted');
+      } else throw new Error('Invalid Api Response!');
     }
-  }, [onScreen, pokemonsCountLimit]);
+    getPokemons();
+  }, [lastPage]);
 
+  useOnScreen({
+    ref: refObserver,
+    onScreen: () => {
+      setLastPage((prevLast) => prevLast + 1);
+    },
+  });
   return (
     <div className='pokemon-wrapper'>
       <span className='pokemon-logo'>choose your pokemon!</span>
@@ -49,8 +37,8 @@ function App(): JSX.Element {
         {pokemons?.map((pokemonItem) => (
           <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
         ))}
+        <div ref={refObserver} className='observer-block'></div>
       </div>
-      <div ref={refObserver} className='observer-block'></div>
     </div>
   );
 }

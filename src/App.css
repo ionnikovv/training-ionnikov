@@ -15,9 +15,9 @@ body {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 50px;
 }
 .observer-block {
-  border: 1 px solid black;
-  height: 30vh;
+  height: 150px;
   background-color: black;
 }

@@ -2,32 +2,33 @@ import { MutableRefObject, RefObject, useEffect, useState } from 'react';
 
 type Props = {
   ref: RefObject<HTMLDivElement> | MutableRefObject<HTMLDivElement>;
+  onScreen: () => void;
 };
 
-const options = {
-  rootMargin: '-200px',
-  // threshold: 0.1,
-};
+export function useOnScreen({ ref, onScreen }: Props): void {
+  const [isEntry, setIsEntry] = useState(false);
+  const observable = ref.current;
 
-export function useOnScreen({ ref }: Props): boolean {
-  const [isIntersecting, setIntersecting] = useState<boolean>(false);
-  const [observeRefValue, setObserveRefValue] = useState<HTMLDivElement>();
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      console.log(entry.isIntersecting);
-      setIntersecting(entry.isIntersecting);
-    }, options);
+    if (!observable) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsEntry(true);
+      },
+      { threshold: 1.0, rootMargin: '20px' }
+    );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-      setObserveRefValue(ref.current);
-    }
+    observer.observe(observable);
+
     return () => {
-      if (observeRefValue) {
-        observer.unobserve(observeRefValue);
-      }
+      observer.unobserve(observable);
     };
-  }, [ref, observeRefValue]);
+  }, [observable]);
 
-  return isIntersecting;
+  useEffect(() => {
+    if (isEntry) {
+      onScreen();
+      setIsEntry(false);
+    }
+  }, [isEntry, onScreen]);
 }
