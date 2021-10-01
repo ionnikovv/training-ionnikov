@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { isPokemonInfoResponse, PokemonsData } from '../../types/PokemonsData';
+import { Loader } from './../Common/Loader/Loader';
 
 import './PokemonCard.css';
 
@@ -8,7 +9,9 @@ interface Props {
 }
 
 export function PokemonCard({ pokemonItem }: Props): JSX.Element {
-  const [pokemonInfo, setPokemonInfo] = useState({ pokemonImageSrc: '', weight: 0, baseExperience: 0, height: 0 });
+  const [pokemonInfo, setPokemonInfo] = useState({ weight: 0, baseExperience: 0, height: 0 });
+  const [isLoading, setIsLoading] = useState(true);
+  const [pokemonImage, setPokemonImage] = useState('');
 
   useEffect(() => {
     async function getPokemonsInfo() {
@@ -16,29 +19,34 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
       const body = (await response.json()) as unknown;
       if (isPokemonInfoResponse(body)) {
         setPokemonInfo({
-          pokemonImageSrc: body.sprites.other.dream_world.front_default,
           weight: body.weight,
           baseExperience: body.base_experience,
           height: body.height,
         });
-      } else throw new Error('Invalid Api Response!');
+        setPokemonImage(body.sprites.other.dream_world.front_default);
+        setIsLoading(false);
+      }
     }
     getPokemonsInfo();
   }, [pokemonItem.url]);
 
   return (
     <div className='pokemon-card' key={pokemonItem.name}>
-      <div className='pokemon-header-wrapper'>
-        <span className='pokemon-name'>{pokemonItem.name}</span>
-        <div className='pokemon-common-info'>
-          <span>Weight: {pokemonInfo.weight}</span>
-          <span>Base experience: {pokemonInfo.baseExperience}</span>
-          <span>Height: {pokemonInfo.height}</span>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className='pokemon-header-wrapper'>
+          <span className='pokemon-name'>{pokemonItem.name}</span>
+          <div className='pokemon-common-info'>
+            <span>Weight: {pokemonInfo.weight}</span>
+            <span>Base experience: {pokemonInfo.baseExperience}</span>
+            <span>Height: {pokemonInfo.height}</span>
+          </div>
+          <div className='pokemon-image'>
+            <img src={pokemonImage} alt='' />
+          </div>
         </div>
-      </div>
-      <div className='pokemon-image'>
-        <img src={pokemonInfo.pokemonImageSrc} alt='' />
-      </div>
+      )}
     </div>
   );
 }

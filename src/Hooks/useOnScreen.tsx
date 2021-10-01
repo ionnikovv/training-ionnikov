@@ -1,21 +1,20 @@
-import { MutableRefObject, RefObject, useEffect, useState } from 'react';
+import { MutableRefObject, RefObject, useEffect } from 'react';
 
 type Props = {
   ref: RefObject<HTMLDivElement> | MutableRefObject<HTMLDivElement>;
-  onScreen: () => void;
+  onIntersect: () => void;
 };
 
-export function useOnScreen({ ref, onScreen }: Props): void {
-  const [isEntry, setIsEntry] = useState(false);
-  const observable = ref.current;
-
+export function useIntersectionObserver({ ref, onIntersect }: Props): void {
   useEffect(() => {
+    const observable = ref.current;
+
     if (!observable) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsEntry(true);
+        if (entry.isIntersecting) onIntersect();
       },
-      { threshold: 1.0, rootMargin: '20px' }
+      { threshold: 0, rootMargin: '100px' }
     );
 
     observer.observe(observable);
@@ -23,12 +22,5 @@ export function useOnScreen({ ref, onScreen }: Props): void {
     return () => {
       observer.unobserve(observable);
     };
-  }, [observable]);
-
-  useEffect(() => {
-    if (isEntry) {
-      onScreen();
-      setIsEntry(false);
-    }
-  }, [isEntry, onScreen]);
+  }, [ref, onIntersect]);
 }
