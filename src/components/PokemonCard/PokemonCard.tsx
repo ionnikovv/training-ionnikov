@@ -32,24 +32,24 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
   }, [pokemonItem.url]);
 
   if (isLoading) return <Loader />;
-  else
-    return (
-      <div
-        className={isActive ? 'activeCard' : 'pokemon-card'}
-        key={pokemonItem.name}
-        onClick={() => setIsActive(!isActive)}
-      >
-        <div className='pokemon-header-wrapper'>
-          <span className='pokemon-name'>{pokemonItem.name}</span>
-          <div className='pokemon-common-info'>
-            <span>Weight: {pokemonInfo.weight}</span>
-            <span>Base experience: {pokemonInfo.baseExperience}</span>
-            <span>Height: {pokemonInfo.height}</span>
-          </div>
-          <div className='pokemon-image'>
-            <img src={pokemonImage} alt='' />
-          </div>
+
+  return (
+    <div
+      className={isActive ? 'activeCard' : 'pokemon-card'}
+      key={pokemonItem.name}
+      onClick={() => setIsActive(!isActive)}
+    >
+      <div className='pokemon-header-wrapper'>
+        <span className='pokemon-name'>{pokemonItem.name}</span>
+        <div className='pokemon-common-info'>
+          <span>Weight: {pokemonInfo.weight}</span>
+          <span>Base experience: {pokemonInfo.baseExperience}</span>
+          <span>Height: {pokemonInfo.height}</span>
+        </div>
+        <div className='pokemon-image'>
+          <img src={pokemonImage} alt='' />
         </div>
       </div>
-    );
+    </div>
+  );
 }
