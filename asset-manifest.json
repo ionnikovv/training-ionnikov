@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/training-ionnikov/static/css/main.bf248b05.chunk.css",
+    "main.js": "/training-ionnikov/static/js/main.77b24019.chunk.js",
+    "main.js.map": "/training-ionnikov/static/js/main.77b24019.chunk.js.map",
+    "runtime-main.js": "/training-ionnikov/static/js/runtime-main.b80575aa.js",
+    "runtime-main.js.map": "/training-ionnikov/static/js/runtime-main.b80575aa.js.map",
+    "static/js/2.b0c802bb.chunk.js": "/training-ionnikov/static/js/2.b0c802bb.chunk.js",
+    "static/js/2.b0c802bb.chunk.js.map": "/training-ionnikov/static/js/2.b0c802bb.chunk.js.map",
+    "static/js/3.97893771.chunk.js": "/training-ionnikov/static/js/3.97893771.chunk.js",
+    "static/js/3.97893771.chunk.js.map": "/training-ionnikov/static/js/3.97893771.chunk.js.map",
+    "index.html": "/training-ionnikov/index.html",
+    "static/css/main.bf248b05.chunk.css.map": "/training-ionnikov/static/css/main.bf248b05.chunk.css.map",
+    "static/js/2.b0c802bb.chunk.js.LICENSE.txt": "/training-ionnikov/static/js/2.b0c802bb.chunk.js.LICENSE.txt",
+    "static/media/three-dots.b98a8c76.svg": "/training-ionnikov/static/media/three-dots.b98a8c76.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b80575aa.js",
+    "static/js/2.b0c802bb.chunk.js",
+    "static/css/main.bf248b05.chunk.css",
+    "static/js/main.77b24019.chunk.js"
+  ]
+}
