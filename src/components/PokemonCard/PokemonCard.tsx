@@ -12,6 +12,7 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
   const [pokemonInfo, setPokemonInfo] = useState({ weight: 0, baseExperience: 0, height: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [pokemonImage, setPokemonImage] = useState('');
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     async function getPokemonsInfo() {
@@ -31,19 +32,24 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
   }, [pokemonItem.url]);
 
   if (isLoading) return <Loader />;
-  return (
-    <div className={'pokemon-card'} key={pokemonItem.name}>
-      <div className='pokemon-header-wrapper'>
-        <span className='pokemon-name'>{pokemonItem.name}</span>
-        <div className='pokemon-common-info'>
-          <span>Weight: {pokemonInfo.weight}</span>
-          <span>Base experience: {pokemonInfo.baseExperience}</span>
-          <span>Height: {pokemonInfo.height}</span>
-        </div>
-        <div className='pokemon-image'>
-          <img src={pokemonImage} alt='' />
+  else
+    return (
+      <div
+        className={isActive ? 'activeCard' : 'pokemon-card'}
+        key={pokemonItem.name}
+        onClick={() => setIsActive(!isActive)}
+      >
+        <div className='pokemon-header-wrapper'>
+          <span className='pokemon-name'>{pokemonItem.name}</span>
+          <div className='pokemon-common-info'>
+            <span>Weight: {pokemonInfo.weight}</span>
+            <span>Base experience: {pokemonInfo.baseExperience}</span>
+            <span>Height: {pokemonInfo.height}</span>
+          </div>
+          <div className='pokemon-image'>
+            <img src={pokemonImage} alt='' />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }

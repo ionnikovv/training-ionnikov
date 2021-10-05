@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
+import { Loader } from './components/Common/Loader/Loader';
 
 import { PokemonCard } from './components/PokemonCard/PokemonCard';
 import { useIntersectionObserver } from './Hooks/useOnScreen';
 import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 function App(): JSX.Element {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
@@ -21,22 +22,22 @@ function App(): JSX.Element {
       const body = (await response.json()) as unknown;
       if (isPokemonResponse(body)) {
         setPokemons((prevPokemons) => [...prevPokemons, ...body.results]);
-        setIsFetching(false);
       }
     }
     getPokemons();
+    setIsFetching(false);
   }, [lastPage]);
 
   const onIntersect = useCallback(() => {
-    if (!isFetching) {
-      setLastPage((prevLast) => prevLast + 1);
-    }
+    if (!isFetching) setLastPage((prevLast) => prevLast + 1);
   }, [isFetching]);
 
   useIntersectionObserver({
     ref: refObserver,
     onIntersect,
   });
+  if (isFetching) return <Loader />;
+
   return (
     <div className='pokemon-wrapper'>
       <span className='pokemon-logo'>choose your pokemon!</span>
