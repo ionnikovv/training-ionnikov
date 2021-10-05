@@ -14,7 +14,7 @@ export function useIntersectionObserver({ ref, onIntersect }: Props): void {
       ([entry]) => {
         if (entry.isIntersecting) onIntersect();
       },
-      { threshold: 0.5, rootMargin: '300px' }
+      { threshold: 0, rootMargin: '100px' }
     );
 
     observer.observe(observable);

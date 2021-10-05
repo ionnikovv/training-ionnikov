@@ -1,8 +1,3 @@
 img .loader {
   width: 300px;
 }
-.loader-wrapper {
-  height: 20px;
-  position: fixed;
-  border: 1px solid black;
-}

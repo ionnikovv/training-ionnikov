@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
-import { Loader } from './components/Common/Loader/Loader';
 
 import { PokemonCard } from './components/PokemonCard/PokemonCard';
 import { useIntersectionObserver } from './Hooks/useOnScreen';
 import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 10;
 
 function App(): JSX.Element {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
@@ -38,19 +37,17 @@ function App(): JSX.Element {
     ref: refObserver,
     onIntersect,
   });
-  if (isFetching) return <Loader />;
-  else
-    return (
-      <div className='pokemon-wrapper'>
-        <span className='pokemon-logo'>choose your pokemon!</span>
-        <div className='pokemon-cards'>
-          {pokemons.map((pokemonItem) => (
-            <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
-          ))}
-          <div ref={refObserver} className='observer-block'></div>
-        </div>
+  return (
+    <div className='pokemon-wrapper'>
+      <span className='pokemon-logo'>choose your pokemon!</span>
+      <div className='pokemon-cards'>
+        {pokemons.map((pokemonItem) => (
+          <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
+        ))}
+        <div ref={refObserver} className='observer-block'></div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default App;
