@@ -1,15 +1,15 @@
-import { MutableRefObject, RefObject, useEffect } from 'react';
+import { useEffect } from 'react';
 
 type Props = {
-  ref: RefObject<HTMLDivElement> | MutableRefObject<HTMLDivElement>;
+  ref: HTMLDivElement | null;
   onIntersect: () => void;
+  isDisabled: boolean;
 };
 
-export function useIntersectionObserver({ ref, onIntersect }: Props): void {
+export function useIntersectionObserver({ ref, onIntersect, isDisabled }: Props): void {
   useEffect(() => {
-    const observable = ref.current;
+    if (isDisabled || !ref) return;
 
-    if (!observable) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) onIntersect();
@@ -17,10 +17,10 @@ export function useIntersectionObserver({ ref, onIntersect }: Props): void {
       { threshold: 0, rootMargin: '300px' }
     );
 
-    observer.observe(observable);
+    observer.observe(ref);
 
     return () => {
-      observer.unobserve(observable);
+      observer.unobserve(ref);
     };
-  }, [ref, onIntersect]);
+  }, [ref, onIntersect, isDisabled]);
 }
