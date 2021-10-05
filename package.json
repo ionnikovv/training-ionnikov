@@ -21,9 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d main -d build"
+    "lint": "eslint src/"
   },
   "browserslist": {
     "production": [
@@ -45,6 +43,5 @@
     "eslint-plugin-react": "^7.26.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.4.1"
-  },
-  "homepage": "https://ionnikovv.github.io/training-ionnikov/"
+  }
 }
