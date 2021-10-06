@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/training-ionnikov/static/css/main.f83f579f.chunk.css",
+    "main.css": "/training-ionnikov/static/css/main.242d0ba5.chunk.css",
     "main.js": "/training-ionnikov/static/js/main.6a9f3869.chunk.js",
     "main.js.map": "/training-ionnikov/static/js/main.6a9f3869.chunk.js.map",
     "runtime-main.js": "/training-ionnikov/static/js/runtime-main.b80575aa.js",
@@ -10,14 +10,14 @@
     "static/js/3.97893771.chunk.js": "/training-ionnikov/static/js/3.97893771.chunk.js",
     "static/js/3.97893771.chunk.js.map": "/training-ionnikov/static/js/3.97893771.chunk.js.map",
     "index.html": "/training-ionnikov/index.html",
-    "static/css/main.f83f579f.chunk.css.map": "/training-ionnikov/static/css/main.f83f579f.chunk.css.map",
+    "static/css/main.242d0ba5.chunk.css.map": "/training-ionnikov/static/css/main.242d0ba5.chunk.css.map",
     "static/js/2.778af5b9.chunk.js.LICENSE.txt": "/training-ionnikov/static/js/2.778af5b9.chunk.js.LICENSE.txt",
     "static/media/three-dots.b98a8c76.svg": "/training-ionnikov/static/media/three-dots.b98a8c76.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.b80575aa.js",
     "static/js/2.778af5b9.chunk.js",
-    "static/css/main.f83f579f.chunk.css",
+    "static/css/main.242d0ba5.chunk.css",
     "static/js/main.6a9f3869.chunk.js"
   ]
 }
