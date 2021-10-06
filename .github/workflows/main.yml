@@ -1,4 +1,4 @@
-name: Build Node.js App
+name: Build and Test React
 
 on:
   push:
@@ -6,30 +6,23 @@ on:
   pull_request:
     branches: [main]
 
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['14']
+        node-version: ['14']
     name: Node.js ${{ matrix.node }} build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node.js
+      - name: Use Node.js ${{ martix.node-version }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
-      - name: Install dependencies
+          node-versions: ${{ matrix.node-version }}
+      - name: Install dependecies
         run: npm ci
       - name: Lint
         run: npm run lint
       - name: Build
         run: npm run build
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.5
-        with:
-          branch: gh-pages
-          folder: build
