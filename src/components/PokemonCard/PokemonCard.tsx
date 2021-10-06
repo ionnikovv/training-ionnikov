@@ -10,10 +10,12 @@ interface Props {
 
 export function PokemonCard({ pokemonItem }: Props): JSX.Element {
   const [pokemonInfo, setPokemonInfo] = useState({ weight: 0, baseExperience: 0, height: 0 });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [pokemonImage, setPokemonImage] = useState('');
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     async function getPokemonsInfo() {
       const response = await fetch(pokemonItem.url);
       const body = (await response.json()) as unknown;
@@ -30,11 +32,15 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
     getPokemonsInfo();
   }, [pokemonItem.url]);
 
-  return (
-    <div className='pokemon-card' key={pokemonItem.name}>
-      {isLoading ? (
-        <Loader />
-      ) : (
+  if (isLoading) {
+    return <Loader />;
+  } else {
+    return (
+      <div
+        className={isActive ? 'activeCard' : 'pokemon-card'}
+        key={pokemonItem.name}
+        onClick={() => setIsActive(!isActive)}
+      >
         <div className='pokemon-header-wrapper'>
           <span className='pokemon-name'>{pokemonItem.name}</span>
           <div className='pokemon-common-info'>
@@ -46,7 +52,7 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
             <img src={pokemonImage} alt='' />
           </div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }
