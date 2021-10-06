@@ -36,19 +36,21 @@ function App(): JSX.Element {
     isDisabled: isFetching,
   });
 
-  if (isFetching) return <Loader />;
-
-  return (
-    <div className='pokemon-wrapper'>
-      <span className='pokemon-logo'>choose your pokemon!</span>
-      <div className='pokemon-cards'>
-        {pokemons.map((pokemonItem) => (
-          <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
-        ))}
-        <div ref={setRef} className='observer-block' />
+  if (isFetching) {
+    return <Loader />;
+  } else {
+    return (
+      <div className='pokemon-wrapper'>
+        <span className='pokemon-logo'>choose your pokemon!</span>
+        <div className='pokemon-cards'>
+          {pokemons.map((pokemonItem) => (
+            <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
+          ))}
+          <div ref={setRef} className='observer-block' />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
