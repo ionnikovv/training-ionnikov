@@ -10,11 +10,12 @@ interface Props {
 
 export function PokemonCard({ pokemonItem }: Props): JSX.Element {
   const [pokemonInfo, setPokemonInfo] = useState({ weight: 0, baseExperience: 0, height: 0 });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [pokemonImage, setPokemonImage] = useState('');
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     async function getPokemonsInfo() {
       const response = await fetch(pokemonItem.url);
       const body = (await response.json()) as unknown;
@@ -31,8 +32,9 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
     getPokemonsInfo();
   }, [pokemonItem.url]);
 
-  if (isLoading) return <Loader />;
-  else
+  if (isLoading) {
+    return <Loader />;
+  } else {
     return (
       <div
         className={isActive ? 'activeCard' : 'pokemon-card'}
@@ -52,4 +54,5 @@ export function PokemonCard({ pokemonItem }: Props): JSX.Element {
         </div>
       </div>
     );
+  }
 }

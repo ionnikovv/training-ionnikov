@@ -4,20 +4,18 @@ import { PokemonCard } from './components/PokemonCard/PokemonCard';
 import { useIntersectionObserver } from './Hooks/useOnScreen';
 import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 import './App.css';
-
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 10;
 
 function App(): JSX.Element {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
-  const [lastPage, setLastPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (lastPage === 0) return;
     async function getPokemons() {
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?limit=${PAGE_SIZE}&offset=${(lastPage - 1) * PAGE_SIZE}`
+        `https://pokeapi.co/api/v2/pokemon?limit=${PAGE_SIZE}&offset=${currentPage * PAGE_SIZE}`
       );
       const body = (await response.json()) as unknown;
       if (isPokemonResponse(body)) {
@@ -26,10 +24,10 @@ function App(): JSX.Element {
       }
     }
     getPokemons();
-  }, [lastPage]);
+  }, [currentPage]);
 
   const onIntersect = () => {
-    setLastPage((prevLast) => prevLast + 1);
+    setCurrentPage((prevLast) => prevLast + 1);
   };
 
   useIntersectionObserver({
@@ -47,7 +45,6 @@ function App(): JSX.Element {
         {pokemons.map((pokemonItem) => (
           <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
         ))}
-        {isFetching && <Loader />}
         <div ref={setRef} className='observer-block' />
       </div>
     </div>
