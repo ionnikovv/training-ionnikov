@@ -14,7 +14,7 @@ export function useIntersectionObserver({ ref, onIntersect, isDisabled }: Props)
       ([entry]) => {
         if (entry.isIntersecting) onIntersect();
       },
-      { threshold: 0, rootMargin: '300px' }
+      { threshold: 1, rootMargin: '200px' }
     );
 
     observer.observe(ref);

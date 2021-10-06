@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Loader } from './components/Common/Loader/Loader';
 import { PokemonCard } from './components/PokemonCard/PokemonCard';
 import { useIntersectionObserver } from './Hooks/useOnScreen';
 import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 import './App.css';
+
 const PAGE_SIZE = 10;
 
-function App(): JSX.Element {
+export const App = (): JSX.Element => {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
@@ -26,9 +27,9 @@ function App(): JSX.Element {
     getPokemons();
   }, [currentPage]);
 
-  const onIntersect = () => {
+  const onIntersect = useCallback(() => {
     setCurrentPage((prevLast) => prevLast + 1);
-  };
+  }, []);
 
   useIntersectionObserver({
     ref,
@@ -46,11 +47,9 @@ function App(): JSX.Element {
           {pokemons.map((pokemonItem) => (
             <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
           ))}
-          <div ref={setRef} className='observer-block' />
         </div>
+        <div ref={setRef} className='observer-block' />
       </div>
     );
   }
-}
-
-export default App;
+};
