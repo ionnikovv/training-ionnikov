@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Loader } from './components/Common/Loader/Loader';
-import { PokemonCard } from './components/PokemonCard/PokemonCard';
-import { useIntersectionObserver } from './Hooks/useOnScreen';
 import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 import './App.css';
+import { useIntersectionObserver } from './Hooks/useOnScreen';
+import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 
 const PAGE_SIZE = 10;
 
@@ -44,9 +44,7 @@ export const App = (): JSX.Element => {
       <div className='pokemon-wrapper'>
         <span className='pokemon-logo'>choose your pokemon!</span>
         <div className='pokemon-cards'>
-          {pokemons.map((pokemonItem) => (
-            <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
-          ))}
+          <SelectPokemons pokemons={pokemons} />
         </div>
         <div ref={setRef} className='observer-block' />
       </div>

@@ -1,19 +1,20 @@
 .pokemon-card,
-.activeCard {
+.active-card {
+  opacity: 0.95;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   color: bisque;
-  margin-bottom: 15px;
+  margin: 15px;
   border: 5px solid black;
-  width: 20em;
+  width: 300px;
   border-radius: 15px;
   height: 400px;
   background-color: #803030;
 }
 
-.activeCard {
+.active-card {
   background-color: #f0971f;
   color: #df1d43;
   border: 5px solid #df1d43;
