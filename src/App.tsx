@@ -7,8 +7,6 @@ import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 
 const PAGE_SIZE = 10;
 
-export const DISABLED_POKEMONS = ['bulbasaur', 'pikachu'];
-
 export const App = (): JSX.Element => {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
