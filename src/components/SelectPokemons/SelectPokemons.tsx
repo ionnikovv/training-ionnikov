@@ -1,5 +1,3 @@
-// import { useState } from 'react';
-import { DISABLED_POKEMONS } from '../../App';
 import { PokemonsData } from '../../types/PokemonsData';
 import { PokemonCard } from '../PokemonCard/PokemonCard';
 import './SelectPokemons.css';
@@ -8,16 +6,21 @@ type Props = {
   pokemons: PokemonsData[];
   selectedPokemons: string[];
   setSelectedPokemons: (arg0: string[]) => void;
+  disabledPokemons: string[];
+  selectedPokemonSize: number;
 };
 
-const SELECTED_POKEMON_SIZE = 2;
-
-export function SelectPokemons({ pokemons, selectedPokemons, setSelectedPokemons }: Props): JSX.Element {
+export function SelectPokemons({
+  pokemons,
+  selectedPokemons,
+  setSelectedPokemons,
+  disabledPokemons,
+  selectedPokemonSize,
+}: Props): JSX.Element {
   const onSelectPokemons = (pokemonName: string) => {
-    if (DISABLED_POKEMONS.includes(pokemonName)) return;
-    if (selectedPokemons.length >= SELECTED_POKEMON_SIZE) {
+    if (disabledPokemons.includes(pokemonName)) return;
+    if (selectedPokemons.length >= selectedPokemonSize) {
       selectedPokemons.shift() ?? '';
-
       setSelectedPokemons([...selectedPokemons, pokemonName]);
     } else setSelectedPokemons([...selectedPokemons, pokemonName]);
   };

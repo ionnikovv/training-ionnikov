@@ -15,8 +15,7 @@ export const App = (): JSX.Element => {
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
-  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
-
+  const [selectedPokemons1, setSelectedPokemons1] = useState<string[]>([]);
   useEffect(() => {
     async function getPokemons() {
       const response = await fetch(
@@ -46,16 +45,14 @@ export const App = (): JSX.Element => {
   } else {
     return (
       <div className='pokemon-wrapper'>
-        Choosed pokemons:{' '}
-        {selectedPokemons.map((pokemon) => {
-          return <div>{pokemon}</div>;
-        })}
         <span className='pokemon-logo'>choose your pokemon!</span>
         <div className='pokemon-cards'>
           <SelectPokemons
             pokemons={pokemons}
-            selectedPokemons={selectedPokemons}
-            setSelectedPokemons={setSelectedPokemons}
+            selectedPokemons={selectedPokemons1}
+            setSelectedPokemons={setSelectedPokemons1}
+            disabledPokemons={['bulbasaur']}
+            selectedPokemonSize={2}
           />
         </div>
         <div ref={setRef} className='observer-block' />

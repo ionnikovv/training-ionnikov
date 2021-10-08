@@ -18,6 +18,9 @@ body {
   text-transform: uppercase;
   font-size: 7vmin;
 }
+.pokemon-cards-wrapper {
+  display: flex;
+}
 .pokemon-cards {
   display: flex;
   justify-content: center;
