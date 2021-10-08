@@ -13,10 +13,10 @@ body {
 
   display: flex;
   justify-content: center;
-
+  align-items: center;
   width: 100%;
   text-transform: uppercase;
-  font-size: 10rem;
+  font-size: 7vmin;
 }
 .pokemon-cards {
   display: flex;

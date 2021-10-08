@@ -1,18 +1,20 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+import { DISABLED_POKEMONS } from '../../App';
 import { PokemonsData } from '../../types/PokemonsData';
 import { PokemonCard } from '../PokemonCard/PokemonCard';
 import './SelectPokemons.css';
+
 type Props = {
   pokemons: PokemonsData[];
+  selectedPokemons: string[];
+  setSelectedPokemons: (arg0: string[]) => void;
 };
 
-const SELECTED_POKEMON_SIZE = 5;
+const SELECTED_POKEMON_SIZE = 2;
 
-export function SelectPokemons({ pokemons }: Props): JSX.Element {
-  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
-
+export function SelectPokemons({ pokemons, selectedPokemons, setSelectedPokemons }: Props): JSX.Element {
   const onSelectPokemons = (pokemonName: string) => {
-    if (pokemonName === 'pikachu') return;
+    if (DISABLED_POKEMONS.includes(pokemonName)) return;
     if (selectedPokemons.length >= SELECTED_POKEMON_SIZE) {
       selectedPokemons.shift() ?? '';
 
@@ -25,10 +27,6 @@ export function SelectPokemons({ pokemons }: Props): JSX.Element {
 
   return (
     <div>
-      Choosed pokemons:{' '}
-      {selectedPokemons.map((pokemon) => {
-        return <div>{pokemon}</div>;
-      })}
       <div className='pokemon-cards'>
         {pokemons.map((pokemonItem) => {
           const isPokemonSelected = selectedPokemons.includes(pokemonItem.name);

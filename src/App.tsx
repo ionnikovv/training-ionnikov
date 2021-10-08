@@ -7,11 +7,15 @@ import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 
 const PAGE_SIZE = 10;
 
+export const DISABLED_POKEMONS = ['bulbasaur', 'pikachu'];
+
 export const App = (): JSX.Element => {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
+
+  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
 
   useEffect(() => {
     async function getPokemons() {
@@ -42,9 +46,17 @@ export const App = (): JSX.Element => {
   } else {
     return (
       <div className='pokemon-wrapper'>
+        Choosed pokemons:{' '}
+        {selectedPokemons.map((pokemon) => {
+          return <div>{pokemon}</div>;
+        })}
         <span className='pokemon-logo'>choose your pokemon!</span>
         <div className='pokemon-cards'>
-          <SelectPokemons pokemons={pokemons} />
+          <SelectPokemons
+            pokemons={pokemons}
+            selectedPokemons={selectedPokemons}
+            setSelectedPokemons={setSelectedPokemons}
+          />
         </div>
         <div ref={setRef} className='observer-block' />
       </div>

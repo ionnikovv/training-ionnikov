@@ -7,21 +7,21 @@
   align-items: center;
   color: bisque;
   margin: 15px;
-  border: 5px solid black;
-  width: 300px;
+  border: 0.5vmax solid black;
+  width: 30vmin;
   border-radius: 15px;
-  height: 400px;
+  height: 40vmin;
   background-color: #803030;
 }
 
 .active-card {
   background-color: #f0971f;
   color: #df1d43;
-  border: 5px solid #df1d43;
+  border: 0.5vmax solid #df1d43;
 }
 
 .pokemon-header-wrapper {
-  height: 50px;
+  height: 5vmax;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -36,14 +36,16 @@
   align-items: center;
   padding: 10px;
   flex-direction: column;
+
+  font-size: 2vmax;
 }
 .pokemon-name {
-  font-size: 1.5em;
+  font-size: 3vmax;
   text-transform: capitalize;
 }
 .pokemon-image {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 120px;
+  width: 12vmax;
 }
