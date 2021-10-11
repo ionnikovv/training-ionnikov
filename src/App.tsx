@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Loader } from './components/Common/Loader/Loader';
-import { PokemonCard } from './components/PokemonCard/PokemonCard';
-import { useIntersectionObserver } from './Hooks/useOnScreen';
 import { isPokemonResponse, PokemonsData } from './types/PokemonsData';
 import './App.css';
+import { useIntersectionObserver } from './Hooks/useOnScreen';
+import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 
 const PAGE_SIZE = 10;
 
@@ -12,6 +12,7 @@ export const App = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
+  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
 
   useEffect(() => {
     async function getPokemons() {
@@ -37,6 +38,21 @@ export const App = (): JSX.Element => {
     isDisabled: isFetching,
   });
 
+  const onSelectPokemon = (pokemonName: string, isCurrentlySelected: boolean) => {
+    const disabledPokemons = ['bulbasaur'];
+    const selectedPokemonSize = 3;
+
+    if (isCurrentlySelected) {
+      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
+    } else {
+      if (disabledPokemons.includes(pokemonName)) return;
+      if (selectedPokemons.length >= selectedPokemonSize) {
+        selectedPokemons.shift() ?? '';
+        setSelectedPokemons([...selectedPokemons, pokemonName]);
+      } else setSelectedPokemons([...selectedPokemons, pokemonName]);
+    }
+  };
+
   if (isFetching) {
     return <Loader />;
   } else {
@@ -44,9 +60,7 @@ export const App = (): JSX.Element => {
       <div className='pokemon-wrapper'>
         <span className='pokemon-logo'>choose your pokemon!</span>
         <div className='pokemon-cards'>
-          {pokemons.map((pokemonItem) => (
-            <PokemonCard pokemonItem={pokemonItem} key={pokemonItem.name} />
-          ))}
+          <SelectPokemons pokemons={pokemons} selectedPokemons={selectedPokemons} onSelectPokemon={onSelectPokemon} />
         </div>
         <div ref={setRef} className='observer-block' />
       </div>

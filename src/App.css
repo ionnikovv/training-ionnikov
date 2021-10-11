@@ -1,21 +1,33 @@
 body {
   margin: none;
   background: #f05424;
+  position: relative;
 }
 .pokemon-logo {
+  position: fixed;
+  top: 35%;
+  z-index: -1;
   margin-top: 50px;
+
+  color: white;
+
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
   text-transform: uppercase;
-  font-size: 40px;
+  font-size: 7vmin;
+}
+.pokemon-cards-wrapper {
+  display: flex;
 }
 .pokemon-cards {
   display: flex;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 50px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .observer-block {
   height: 10px;
