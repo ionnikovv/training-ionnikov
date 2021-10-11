@@ -13,7 +13,7 @@ export const App = (): JSX.Element => {
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
-  const [selectedPokemons1, setSelectedPokemons1] = useState<string[]>([]);
+  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
   useEffect(() => {
     async function getPokemons() {
       const response = await fetch(
@@ -38,6 +38,22 @@ export const App = (): JSX.Element => {
     isDisabled: isFetching,
   });
 
+  const onSelectedPokemons = (pokemonName: string, isPokemonSelected: boolean) => {
+    const disabledPokemons = ['ivysaur'];
+    const selectedPokemonSize = 2;
+    const onSelectPokemons = (pokemonName: string) => {
+      if (disabledPokemons.includes(pokemonName)) return;
+      if (selectedPokemons.length >= selectedPokemonSize) {
+        selectedPokemons.shift() ?? '';
+        setSelectedPokemons([...selectedPokemons, pokemonName]);
+      } else setSelectedPokemons([...selectedPokemons, pokemonName]);
+    };
+    const onDeselectPokemons = (pokemonName: string) => {
+      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
+    };
+    return isPokemonSelected ? onDeselectPokemons(pokemonName) : onSelectPokemons(pokemonName);
+  };
+
   if (isFetching) {
     return <Loader />;
   } else {
@@ -47,10 +63,8 @@ export const App = (): JSX.Element => {
         <div className='pokemon-cards'>
           <SelectPokemons
             pokemons={pokemons}
-            selectedPokemons={selectedPokemons1}
-            setSelectedPokemons={setSelectedPokemons1}
-            disabledPokemons={['bulbasaur']}
-            selectedPokemonSize={2}
+            selectedPokemons={selectedPokemons}
+            onSelectedPokemons={onSelectedPokemons}
           />
         </div>
         <div ref={setRef} className='observer-block' />

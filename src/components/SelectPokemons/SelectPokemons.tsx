@@ -5,29 +5,10 @@ import './SelectPokemons.css';
 type Props = {
   pokemons: PokemonsData[];
   selectedPokemons: string[];
-  setSelectedPokemons: (arg0: string[]) => void;
-  disabledPokemons: string[];
-  selectedPokemonSize: number;
+  onSelectedPokemons: (arg0: string, arg1: boolean) => void;
 };
 
-export function SelectPokemons({
-  pokemons,
-  selectedPokemons,
-  setSelectedPokemons,
-  disabledPokemons,
-  selectedPokemonSize,
-}: Props): JSX.Element {
-  const onSelectPokemons = (pokemonName: string) => {
-    if (disabledPokemons.includes(pokemonName)) return;
-    if (selectedPokemons.length >= selectedPokemonSize) {
-      selectedPokemons.shift() ?? '';
-      setSelectedPokemons([...selectedPokemons, pokemonName]);
-    } else setSelectedPokemons([...selectedPokemons, pokemonName]);
-  };
-  const onDeselectPokemons = (pokemonName: string) => {
-    setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
-  };
-
+export function SelectPokemons({ pokemons, selectedPokemons, onSelectedPokemons }: Props): JSX.Element {
   return (
     <div>
       <div className='pokemon-cards'>
@@ -38,9 +19,7 @@ export function SelectPokemons({
               pokemonItem={pokemonItem}
               key={pokemonItem.name}
               isPokemonSelected={isPokemonSelected}
-              onClick={() =>
-                isPokemonSelected ? onDeselectPokemons(pokemonItem.name) : onSelectPokemons(pokemonItem.name)
-              }
+              onClick={() => onSelectedPokemons(pokemonItem.name, isPokemonSelected)}
             />
           );
         })}
