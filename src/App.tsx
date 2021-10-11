@@ -46,10 +46,10 @@ export const App = (): JSX.Element => {
       setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
     } else {
       if (disabledPokemons.includes(pokemonName)) return;
-      if (selectedPokemons.length >= selectedPokemonSize) {
-        selectedPokemons.shift() ?? '';
-        setSelectedPokemons([...selectedPokemons, pokemonName]);
-      } else setSelectedPokemons([...selectedPokemons, pokemonName]);
+      if (selectedPokemons.length >= selectedPokemonSize)
+        return setSelectedPokemons([...selectedPokemons.slice(1), pokemonName]);
+
+      setSelectedPokemons([...selectedPokemons, pokemonName]);
     }
   };
 
