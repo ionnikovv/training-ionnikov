@@ -12,8 +12,8 @@ export const App = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-
   const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
+
   useEffect(() => {
     async function getPokemons() {
       const response = await fetch(

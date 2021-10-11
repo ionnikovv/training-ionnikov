@@ -34,7 +34,7 @@ export function PokemonCard({ pokemonItem, onClick, isPokemonSelected }: Props):
   }, [pokemonItem.url]);
 
   return (
-    <div className={isPokemonSelected ? 'active-card' : 'pokemon-card'} onClick={onClick}>
+    <div className={isPokemonSelected ? 'pokemon-card active' : 'pokemon-card'} onClick={onClick}>
       {isLoading ? (
         <Loader />
       ) : (

@@ -1,5 +1,4 @@
-.pokemon-card,
-.active-card {
+.pokemon-card {
   opacity: 0.95;
   display: flex;
   justify-content: center;
@@ -14,7 +13,7 @@
   background-color: #803030;
 }
 
-.active-card {
+.active {
   background-color: #f0971f;
   color: #df1d43;
   border: 0.25vmax solid #df1d43;
