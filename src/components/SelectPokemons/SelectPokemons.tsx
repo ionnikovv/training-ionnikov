@@ -5,10 +5,10 @@ import './SelectPokemons.css';
 type Props = {
   pokemons: PokemonsData[];
   selectedPokemons: string[];
-  onSelectedPokemons: (arg0: string, arg1: boolean) => void;
+  onSelectPokemon: (pokemonName: string, isCurrentlySelected: boolean) => void;
 };
 
-export function SelectPokemons({ pokemons, selectedPokemons, onSelectedPokemons }: Props): JSX.Element {
+export function SelectPokemons({ pokemons, selectedPokemons, onSelectPokemon }: Props): JSX.Element {
   return (
     <div>
       <div className='pokemon-cards'>
@@ -19,7 +19,7 @@ export function SelectPokemons({ pokemons, selectedPokemons, onSelectedPokemons 
               pokemonItem={pokemonItem}
               key={pokemonItem.name}
               isPokemonSelected={isPokemonSelected}
-              onClick={() => onSelectedPokemons(pokemonItem.name, isPokemonSelected)}
+              onClick={() => onSelectPokemon(pokemonItem.name, isPokemonSelected)}
             />
           );
         })}

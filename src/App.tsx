@@ -38,20 +38,19 @@ export const App = (): JSX.Element => {
     isDisabled: isFetching,
   });
 
-  const onSelectedPokemons = (pokemonName: string, isPokemonSelected: boolean) => {
-    const disabledPokemons = ['ivysaur'];
-    const selectedPokemonSize = 2;
-    const onSelectPokemons = (pokemonName: string) => {
+  const onSelectPokemon = (pokemonName: string, isCurrentlySelected: boolean) => {
+    const disabledPokemons = ['bulbasaur'];
+    const selectedPokemonSize = 3;
+
+    if (isCurrentlySelected) {
+      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
+    } else {
       if (disabledPokemons.includes(pokemonName)) return;
       if (selectedPokemons.length >= selectedPokemonSize) {
         selectedPokemons.shift() ?? '';
         setSelectedPokemons([...selectedPokemons, pokemonName]);
       } else setSelectedPokemons([...selectedPokemons, pokemonName]);
-    };
-    const onDeselectPokemons = (pokemonName: string) => {
-      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
-    };
-    return isPokemonSelected ? onDeselectPokemons(pokemonName) : onSelectPokemons(pokemonName);
+    }
   };
 
   if (isFetching) {
@@ -61,11 +60,7 @@ export const App = (): JSX.Element => {
       <div className='pokemon-wrapper'>
         <span className='pokemon-logo'>choose your pokemon!</span>
         <div className='pokemon-cards'>
-          <SelectPokemons
-            pokemons={pokemons}
-            selectedPokemons={selectedPokemons}
-            onSelectedPokemons={onSelectedPokemons}
-          />
+          <SelectPokemons pokemons={pokemons} selectedPokemons={selectedPokemons} onSelectPokemon={onSelectPokemon} />
         </div>
         <div ref={setRef} className='observer-block' />
       </div>
