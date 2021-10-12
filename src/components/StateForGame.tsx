@@ -3,7 +3,7 @@ import { backgroundSpeed } from '../ConstantValues/ConstValues';
 
 export const StateForGame = (): JSX.Element => {
   const [playerCoord] = useState(100);
-  const [obstaclesOnScreen] = useState([true, true]);
+  const [obstaclesOnScreen] = useState([]);
   const [obstacleHeight] = useState(0);
   const [obstacleShifting] = useState(50);
   const [isPlaying] = useState(false);
