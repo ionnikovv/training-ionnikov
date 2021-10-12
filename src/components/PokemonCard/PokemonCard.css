@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   color: bisque;
-  margin: 15px;
+  margin: 1.5vmin;
   border: 0.25vmax solid black;
   width: 30vmin;
   border-radius: 1.5vmin;
@@ -27,7 +27,7 @@
   flex-direction: column;
   align-items: center;
 
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
 }
 .pokemon-common-info {
   display: flex;
@@ -39,7 +39,7 @@
   font-size: 1vmax;
 }
 .pokemon-name {
-  font-size: 2vmax;
+  font-size: 1.5vmax;
   text-transform: capitalize;
 }
 .pokemon-image {
