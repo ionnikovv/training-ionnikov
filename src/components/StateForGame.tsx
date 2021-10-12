@@ -3,9 +3,9 @@ import { useState } from 'react';
 export const StateForGame = (): JSX.Element => {
   const [playerJumpValue] = useState(100);
 
-  const [obstacleHeight] = useState({ height: 0 });
+  const [obstacleHeight] = useState(0);
 
-  const [obstacleCoords] = useState({ x: 0 });
+  const [obstacleShifting] = useState(50);
 
   const backgroundSpeed = 50;
 
@@ -14,8 +14,8 @@ export const StateForGame = (): JSX.Element => {
   return (
     <div>
       <span>Player jump value: {playerJumpValue}</span>
-      <span>height of obstacle: {obstacleHeight.height}</span>
-      <span>Coords of obstacle transition: {obstacleCoords.x}</span>
+      <span>height of obstacle: {obstacleHeight}</span>
+      <span>Coords of obstacle transition: {obstacleShifting}</span>
       <span>Speed of transition of background: {backgroundSpeed}</span>
       <span>Is game started: {isPlaying}</span>
     </div>
