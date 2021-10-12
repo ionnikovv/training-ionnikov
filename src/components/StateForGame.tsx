@@ -4,22 +4,21 @@ import { Obstacle } from './Game/Obstacle/Obstacle';
 
 export const StateForGame = (): JSX.Element => {
   const [playerCoord] = useState(100);
-  const [obstaclesOnScreen] = useState([10, 20, 30]);
-  //   this array consist of each obstacle`s id
-  const [obstacleShifting] = useState(50);
+  const [obstacles] = useState([
+    { height: 10, coordX: 1 },
+    { height: 20, coordX: 3 },
+  ]);
   const [isPlaying] = useState(false);
 
   return (
     <div>
       <span>Player jump value: {playerCoord}</span>
       <span>
-        count of obstacles and their height :
-        {obstaclesOnScreen.map(() => {
-          <Obstacle />;
+        Obstacles
+        {obstacles.map((obstacle) => {
+          <Obstacle height={obstacle.height} coordX={obstacle.coordX} />;
         })}
       </span>
-      <span>Count of obstacles on screen :{obstaclesOnScreen}</span>
-      <span>Coords of obstacle shifting: {obstacleShifting}</span>
       <span>Speed of transition of background: {backgroundSpeed}</span>
       <span>Is game started: {isPlaying}</span>
     </div>
