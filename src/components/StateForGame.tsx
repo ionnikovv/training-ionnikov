@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { backgroundSpeed } from '../ConstantValues/ConstValues';
+import { backgroundSpeed } from './../ConstantValues/ConstValues';
 import { Obstacle } from './Game/Obstacle/Obstacle';
 
 export const StateForGame = (): JSX.Element => {
