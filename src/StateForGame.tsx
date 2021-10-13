@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { Obstacle } from './components/Game/Obstacle/Obstacle';
+import { Obstacle as ObstacleComponent } from './components/Game/Obstacle/Obstacle';
 import { backgroundSpeed } from './ConstantValues/ConstValues';
-import { ObstaclesType } from './types/GameTypes';
+import { Obstacle } from './types/GameTypes';
 
 export const StateForGame = (): JSX.Element => {
   const [playerCoord] = useState(100);
-  const [obstacles] = useState<ObstaclesType[]>([{ height: 10, x: 1, y: 0 }]);
+  const [obstacles] = useState<Obstacle[]>([
+    { height: 10, x: 1, y: 0 },
+    { height: 15, x: 10, y: 10 },
+  ]);
   const [isPlaying] = useState(false);
 
   return (
@@ -14,7 +17,7 @@ export const StateForGame = (): JSX.Element => {
       <span>
         Obstacles
         {obstacles.map((obstacle) => {
-          <Obstacle height={obstacle.height} coordX={obstacle.x} />;
+          <ObstacleComponent height={obstacle.height} coordX={obstacle.x} />;
         })}
       </span>
       <span>Speed of transition of background: {backgroundSpeed}</span>
