@@ -1,0 +1,29 @@
+.pokemon-logo {
+  position: fixed;
+  top: 35%;
+  margin-top: 50px;
+
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 7vmin;
+}
+.pokemon-cards-wrapper {
+  display: flex;
+}
+.pokemon-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.observer-block {
+  height: 10px;
+  background-color: transparent;
+}
