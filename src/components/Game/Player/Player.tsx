@@ -23,8 +23,8 @@ export const Player = ({ pokemonUrl }: Props): JSX.Element => {
 
   return (
     <div className='player-wrapper'>
-      <img className='skate' src={skate} />
       <img className='pokemon' src={pokemonImage} />
+      <img className='skate' src={skate} />
     </div>
   );
 };
