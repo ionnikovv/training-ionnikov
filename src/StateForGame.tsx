@@ -14,12 +14,7 @@ export const StateForGame = (): JSX.Element => {
   return (
     <div>
       <span>Player jump value: {playerCoord}</span>
-      <span>
-        Obstacles
-        {obstacles.map((obstacle) => {
-          <ObstacleComponent height={obstacle.height} coordX={obstacle.x} />;
-        })}
-      </span>
+      <span>Obstacles</span>
       <span>Speed of transition of background: {backgroundSpeed}</span>
       <span>Is game started: {isPlaying}</span>
     </div>

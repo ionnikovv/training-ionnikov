@@ -1,12 +1,14 @@
+import './Obstacle.css';
+
 type Props = {
   height: number;
   coordX: number;
 };
 
-export const Obstacle = ({ height, coordX }: Props): JSX.Element => {
+export const Obstacle = (): JSX.Element => {
   return (
-    <div>
-      Obstacle, {height} coordX {coordX}
+    <div className='obstacle-wrapper'>
+      <div></div>
     </div>
   );
 };
