@@ -2,9 +2,10 @@
   margin-left: 2vmin;
 }
 .pokemon {
-  width: 10vmin;
+  width: 8vmin;
   position: absolute;
-  top: 65%;
+  top: 68%;
+  left: 27%;
 }
 .skate {
   width: 11vmin;
