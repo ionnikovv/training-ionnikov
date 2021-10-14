@@ -10,9 +10,15 @@ type Props = {
   selectedPokemonSize: number;
   disabledPokemons: string[];
   setIsSelected: () => void;
+  setPlayer: (name: string, url: string) => void;
 };
 
-export const SelectPokemons = ({ disabledPokemons, selectedPokemonSize, setIsSelected }: Props): JSX.Element => {
+export const SelectPokemons = ({
+  disabledPokemons,
+  selectedPokemonSize,
+  setIsSelected,
+  setPlayer,
+}: Props): JSX.Element => {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
@@ -43,16 +49,17 @@ export const SelectPokemons = ({ disabledPokemons, selectedPokemonSize, setIsSel
     isDisabled: isFetching,
   });
 
-  const onSelectPokemon = (pokemonName: string, isCurrentlySelected: boolean): void => {
+  const onSelectPokemon = (pokemon: PokemonsData, isCurrentlySelected: boolean): void => {
+    setPlayer(pokemon.name, pokemon.url);
     if (isCurrentlySelected) {
       setIsSelected();
-      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
+      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemon.name));
     } else {
-      if (disabledPokemons.includes(pokemonName)) return;
+      if (disabledPokemons.includes(pokemon.name)) return;
       if (selectedPokemons.length >= selectedPokemonSize)
-        return setSelectedPokemons([...selectedPokemons.slice(1), pokemonName]);
+        return setSelectedPokemons([...selectedPokemons.slice(1), pokemon.name]);
       setIsSelected();
-      setSelectedPokemons([...selectedPokemons, pokemonName]);
+      setSelectedPokemons([...selectedPokemons, pokemon.name]);
     }
   };
 
@@ -70,7 +77,7 @@ export const SelectPokemons = ({ disabledPokemons, selectedPokemonSize, setIsSel
                 pokemonItem={pokemonItem}
                 key={pokemonItem.name}
                 isPokemonSelected={isPokemonSelected}
-                onClick={() => onSelectPokemon(pokemonItem.name, isPokemonSelected)}
+                onClick={() => onSelectPokemon(pokemonItem, isPokemonSelected)}
               />
             );
           })}

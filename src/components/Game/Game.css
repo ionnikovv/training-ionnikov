@@ -1,0 +1,42 @@
+.game-wrapper {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  flex-direction: column;
+  width: 100%;
+}
+.game-logo {
+  margin-top: 50px;
+  color: rgb(1, 11, 68);
+  text-transform: uppercase;
+  font-size: 7vmin;
+  display: flex;
+  justify-content: center;
+}
+.game-block-container {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  border: 5px solid black;
+  width: 50%;
+  height: 45vmin;
+  margin-top: 5vmin;
+  overflow: hidden;
+}
+.game-block {
+  width: 1500px;
+  height: 45vmin;
+  background-image: url('./../../assets/game-background.jpg');
+  background-size: 100% 100%;
+  /* animation: animatedBackground 10s linear infinite; */
+  background-position: 0px;
+  background-repeat: repeat-x;
+}
+@keyframes animatedBackground {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100%, 0);
+  }
+}

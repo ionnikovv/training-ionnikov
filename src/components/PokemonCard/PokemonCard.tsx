@@ -31,7 +31,7 @@ export function PokemonCard({ pokemonItem, onClick, isPokemonSelected }: Props):
       }
     }
     getPokemonsInfo();
-  }, [pokemonItem.url]);
+  }, [pokemonItem?.url]);
 
   return (
     <div className={isPokemonSelected ? 'pokemon-card active' : 'pokemon-card'} onClick={onClick}>

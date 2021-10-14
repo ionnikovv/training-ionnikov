@@ -1,5 +1,5 @@
 import './Loader.css';
-import svg from './../../../three-dots.svg';
+import svg from './../../../assets/three-dots.svg';
 
 export function Loader(): JSX.Element {
   return (
