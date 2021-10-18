@@ -23,6 +23,7 @@ export const App = (): JSX.Element => {
       if (selectedPokemons.length >= selectedPokemonSize)
         return setSelectedPokemons([...selectedPokemons.slice(1), pokemon.name]);
 
+      setIsSelected(!isSelected);
       setSelectedPokemons([...selectedPokemons, pokemon.name]);
     }
   };
