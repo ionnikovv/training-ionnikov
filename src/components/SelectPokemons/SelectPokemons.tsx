@@ -7,23 +7,15 @@ import { PokemonCard } from '../PokemonCard/PokemonCard';
 import './SelectPokemons.css';
 
 type Props = {
-  selectedPokemonSize: number;
-  disabledPokemons: string[];
-  setIsSelected: () => void;
-  setPlayer: (name: string, url: string) => void;
+  onSelectPokemon: (pokemon: PokemonsData, isCurrentlySelected: boolean) => void;
+  selectedPokemons: string[];
 };
 
-export const SelectPokemons = ({
-  disabledPokemons,
-  selectedPokemonSize,
-  setIsSelected,
-  setPlayer,
-}: Props): JSX.Element => {
+export const SelectPokemons = ({ onSelectPokemon, selectedPokemons }: Props): JSX.Element => {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
 
   useEffect(() => {
     async function getPokemons() {
@@ -48,20 +40,6 @@ export const SelectPokemons = ({
     onIntersect,
     isDisabled: isFetching,
   });
-
-  const onSelectPokemon = (pokemon: PokemonsData, isCurrentlySelected: boolean): void => {
-    setPlayer(pokemon.name, pokemon.url);
-    if (isCurrentlySelected) {
-      setIsSelected();
-      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemon.name));
-    } else {
-      if (disabledPokemons.includes(pokemon.name)) return;
-      if (selectedPokemons.length >= selectedPokemonSize)
-        return setSelectedPokemons([...selectedPokemons.slice(1), pokemon.name]);
-      setIsSelected();
-      setSelectedPokemons([...selectedPokemons, pokemon.name]);
-    }
-  };
 
   if (isFetching) {
     return <Loader />;

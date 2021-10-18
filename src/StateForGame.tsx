@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Obstacle as ObstacleComponent } from './components/Game/Obstacle/Obstacle';
+import { GameObstacle } from './components/Game/Obstacle/GameObstacle';
 import { backgroundSpeed } from './ConstantValues/ConstValues';
 import { Obstacle } from './types/GameTypes';
 
@@ -17,6 +17,11 @@ export const StateForGame = (): JSX.Element => {
       <span>Obstacles</span>
       <span>Speed of transition of background: {backgroundSpeed}</span>
       <span>Is game started: {isPlaying}</span>
+      <span>
+        {obstacles.map((obstacle) => (
+          <GameObstacle height={obstacle.height} y={obstacle.y} x={obstacle.x} />
+        ))}
+      </span>
     </div>
   );
 };

@@ -5,12 +5,26 @@ import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 import { PokemonsData } from './types/PokemonsData';
 
 export const App = (): JSX.Element => {
-  const disabledPokemons = [''];
-  const selectedPokemonSize = 1;
   const [isSelected, setIsSelected] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [pokemonPlayer, setPokemonPlayer] = useState<PokemonsData>();
+  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
 
+  const onSelectPokemon = (pokemon: PokemonsData, isCurrentlySelected: boolean): void => {
+    const disabledPokemons = [''];
+    const selectedPokemonSize = 1;
+    setPokemonPlayer(pokemon);
+    if (isCurrentlySelected) {
+      setIsSelected((prevState) => !prevState);
+      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemon.name));
+    } else {
+      if (disabledPokemons.includes(pokemon.name)) return;
+      if (selectedPokemons.length >= selectedPokemonSize)
+        return setSelectedPokemons([...selectedPokemons.slice(1), pokemon.name]);
+      setIsSelected((prevState) => !prevState);
+      setSelectedPokemons([...selectedPokemons, pokemon.name]);
+    }
+  };
   return (
     <div className='main-wrapper'>
       {isSelected && (
@@ -29,12 +43,7 @@ export const App = (): JSX.Element => {
       {isGameStarted ? (
         <Game pokemonPlayer={pokemonPlayer} />
       ) : (
-        <SelectPokemons
-          setIsSelected={() => setIsSelected((prevState) => !prevState)}
-          selectedPokemonSize={selectedPokemonSize}
-          disabledPokemons={disabledPokemons}
-          setPlayer={(name, url) => setPokemonPlayer({ name, url })}
-        />
+        <SelectPokemons selectedPokemons={selectedPokemons} onSelectPokemon={onSelectPokemon} />
       )}
     </div>
   );
