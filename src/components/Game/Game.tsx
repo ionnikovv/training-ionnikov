@@ -1,6 +1,5 @@
 import { PokemonsData } from '../../types/PokemonsData';
 import './Game.css';
-
 import { Player } from './Player/Player';
 
 type Props = {

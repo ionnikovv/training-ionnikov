@@ -15,13 +15,14 @@ export const App = (): JSX.Element => {
     const selectedPokemonSize = 1;
     setPokemonPlayer(pokemon);
     if (isCurrentlySelected) {
-      setIsSelected((prevState) => !prevState);
+      setIsSelected(!isSelected);
       setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemon.name));
     } else {
       if (disabledPokemons.includes(pokemon.name)) return;
+
       if (selectedPokemons.length >= selectedPokemonSize)
         return setSelectedPokemons([...selectedPokemons.slice(1), pokemon.name]);
-      setIsSelected((prevState) => !prevState);
+
       setSelectedPokemons([...selectedPokemons, pokemon.name]);
     }
   };
