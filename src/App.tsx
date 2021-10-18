@@ -4,15 +4,18 @@ import { Game } from './components/Game/Game';
 import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 import { PokemonsData } from './types/PokemonsData';
 
-export const App = (): JSX.Element => {
+type Props = {
+  disabledPokemons?: string[];
+  selectedPokemonSize?: number;
+};
+
+export const App = ({ disabledPokemons = [''], selectedPokemonSize = 1 }: Props): JSX.Element => {
   const [isSelected, setIsSelected] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [pokemonPlayer, setPokemonPlayer] = useState<PokemonsData>();
   const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
 
   const onSelectPokemon = (pokemon: PokemonsData, isCurrentlySelected: boolean): void => {
-    const disabledPokemons = [''];
-    const selectedPokemonSize = 1;
     setPokemonPlayer(pokemon);
     if (isCurrentlySelected) {
       setIsSelected(!isSelected);
@@ -27,6 +30,7 @@ export const App = (): JSX.Element => {
       setSelectedPokemons([...selectedPokemons, pokemon.name]);
     }
   };
+
   return (
     <div className='main-wrapper'>
       {isSelected && (

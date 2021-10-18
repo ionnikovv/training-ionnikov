@@ -13,7 +13,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
       <div className='game-block-container'>
         <div className='game-block'></div>
-        <div className='game-block-second'></div>
       </div>
       <Player pokemonUrl={pokemonPlayer?.url} />
     </div>
