@@ -12,7 +12,9 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
 
       <div className='game-block-container'>
-        <div className='game-block'></div>
+        <div className='game-block'>
+          <div className='game-field'></div>
+        </div>
       </div>
       <Player pokemonUrl={pokemonPlayer?.url} />
     </div>

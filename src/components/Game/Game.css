@@ -31,6 +31,12 @@
   animation: animatedBackground 10s linear infinite;
   animation-fill-mode: forwards;
 }
+
+.game-field {
+  width: 100%;
+  height: 79%;
+}
+
 @keyframes animatedBackground {
   from {
     background-position: 0 0;
