@@ -7,17 +7,15 @@ import { PokemonCard } from '../PokemonCard/PokemonCard';
 import './SelectPokemons.css';
 
 type Props = {
-  selectedPokemonSize: number;
-  disabledPokemons: string[];
-  setIsSelected: () => void;
+  onSelectPokemon: (pokemon: PokemonsData, isCurrentlySelected: boolean) => void;
+  selectedPokemons: string[];
 };
 
-export const SelectPokemons = ({ disabledPokemons, selectedPokemonSize, setIsSelected }: Props): JSX.Element => {
+export const SelectPokemons = ({ onSelectPokemon, selectedPokemons }: Props): JSX.Element => {
   const [pokemons, setPokemons] = useState<PokemonsData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const [selectedPokemons, setSelectedPokemons] = useState<string[]>([]);
 
   useEffect(() => {
     async function getPokemons() {
@@ -43,19 +41,6 @@ export const SelectPokemons = ({ disabledPokemons, selectedPokemonSize, setIsSel
     isDisabled: isFetching,
   });
 
-  const onSelectPokemon = (pokemonName: string, isCurrentlySelected: boolean): void => {
-    if (isCurrentlySelected) {
-      setIsSelected();
-      setSelectedPokemons(selectedPokemons.filter((item) => item !== pokemonName));
-    } else {
-      if (disabledPokemons.includes(pokemonName)) return;
-      if (selectedPokemons.length >= selectedPokemonSize)
-        return setSelectedPokemons([...selectedPokemons.slice(1), pokemonName]);
-      setIsSelected();
-      setSelectedPokemons([...selectedPokemons, pokemonName]);
-    }
-  };
-
   if (isFetching) {
     return <Loader />;
   } else {
@@ -70,7 +55,7 @@ export const SelectPokemons = ({ disabledPokemons, selectedPokemonSize, setIsSel
                 pokemonItem={pokemonItem}
                 key={pokemonItem.name}
                 isPokemonSelected={isPokemonSelected}
-                onClick={() => onSelectPokemon(pokemonItem.name, isPokemonSelected)}
+                onClick={() => onSelectPokemon(pokemonItem, isPokemonSelected)}
               />
             );
           })}

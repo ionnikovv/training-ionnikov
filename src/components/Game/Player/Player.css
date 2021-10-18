@@ -1,0 +1,15 @@
+.player-wrapper {
+  margin-left: 2vmin;
+}
+.pokemon {
+  width: 8vmin;
+  position: absolute;
+  top: 68%;
+  left: 29%;
+}
+.skate {
+  width: 11vmin;
+  position: absolute;
+  top: 78%;
+  left: 28%;
+}
