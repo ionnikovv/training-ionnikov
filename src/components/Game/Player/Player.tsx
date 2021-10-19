@@ -6,10 +6,12 @@ import './Player.css';
 type Props = {
   pokemonUrl: string | undefined;
   playerCoord: number;
-  setPlayerCoord: (newPlayerCoord: number) => void;
+  onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
 
-export const Player = ({ pokemonUrl, setPlayerCoord, playerCoord }: Props): JSX.Element => {
+const TICK = 125;
+
+export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
   const [isJumping, setIsJumping] = useState(false);
 
@@ -44,19 +46,19 @@ export const Player = ({ pokemonUrl, setPlayerCoord, playerCoord }: Props): JSX.
     const step = Math.PI / 20;
     const intervalId = setInterval(() => {
       if (jumpProgress > Math.PI) {
-        setPlayerCoord(0);
+        onChangePlayerCoord(0);
         setIsJumping(false);
         return;
       }
       // const coord = step ** 2 * 40;
       const coord = Math.sin(jumpProgress);
 
-      setPlayerCoord(coord * -50);
+      onChangePlayerCoord(coord * -50);
       jumpProgress += step;
-    }, 50);
+    }, TICK);
 
     return () => clearInterval(intervalId);
-  }, [isJumping, setPlayerCoord]);
+  }, [isJumping, onChangePlayerCoord]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert}%`;

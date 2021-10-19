@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import { PokemonsData } from '../../types/PokemonsData';
 import './Game.css';
 import { Player } from './Player/Player';
 
 type Props = {
   pokemonPlayer: PokemonsData | undefined;
-  playerCoord: number;
-  setPlayerCoord: (newPlayerCoord: number) => void;
 };
 
-export const Game = ({ pokemonPlayer, playerCoord, setPlayerCoord }: Props): JSX.Element => {
+export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
+  const [playerCoord, setPlayerCoord] = useState(0);
   return (
     <div className='game-wrapper'>
       <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
@@ -16,7 +16,7 @@ export const Game = ({ pokemonPlayer, playerCoord, setPlayerCoord }: Props): JSX
       <div className='game-block-container'>
         <div className='game-block'>
           <div className='game-field'>
-            <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} setPlayerCoord={setPlayerCoord} />
+            <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} onChangePlayerCoord={setPlayerCoord} />
           </div>
         </div>
       </div>
