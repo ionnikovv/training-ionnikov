@@ -9,6 +9,7 @@ type Props = {
 
 export const Player = ({ pokemonUrl }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
+  const [isJumping, setIsJumping] = useState(false);
   const [playerCoord, setplayerCoord] = useState(0);
 
   useEffect(() => {
@@ -26,31 +27,49 @@ export const Player = ({ pokemonUrl }: Props): JSX.Element => {
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowUp') {
-        setInterval(() => setplayerCoord((prevCoord) => prevCoord + 500), 500);
+        setIsJumping(true);
       }
     };
     document.addEventListener('keydown', handleKeydown);
-    // return () => {
-    //   document.removeEventListener('keydown', handleKeydown);
-    // };
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+    };
   }, []);
 
-  const convertToCssUnits = (valueToConvert: number): number => {
-    //   //  0 - 600
-    //   // 100 - 400
-    const ratio = 0.6;
-    if (valueToConvert === 0) return 600;
-    else return valueToConvert * ratio;
+  useEffect(() => {
+    if (!isJumping) return;
+
+    let jumpProgress = 0.1;
+    const step = Math.PI / 20;
+    const intervalId = setInterval(() => {
+      if (jumpProgress > Math.PI) {
+        setplayerCoord(0);
+        setIsJumping(false);
+        return;
+      }
+      const coord = step ** 2 * 40;
+      setplayerCoord(coord * -50);
+      jumpProgress += step;
+    }, 50);
+
+    return () => clearInterval(intervalId);
+  }, [isJumping]);
+
+  const convertToCssUnits = (valueToConvert: number): string | undefined => {
+    return `${valueToConvert}%`;
   };
 
   const stylesJump = {
     top: convertToCssUnits(playerCoord),
+    transition: 'top 0.75s',
   };
 
   return (
-    <div className='player-wrapper'>
-      <img className='pokemon' src={pokemonImage} style={stylesJump} />
+    <div className='player-wrapper' style={stylesJump}>
+      <img className='pokemon' src={pokemonImage} />
       <img className='skate' src={skate} />
     </div>
   );
 };
+
+//
