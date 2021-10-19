@@ -20,8 +20,8 @@
   border: 5px solid black;
   width: 50%;
   height: 45vmin;
-  /* margin-top: 5vmin; */
-  /* overflow: hidden; */
+  margin-top: 5vmin;
+  overflow: hidden;
 }
 .game-block {
   width: 100%;
