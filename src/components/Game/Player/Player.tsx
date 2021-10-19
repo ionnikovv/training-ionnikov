@@ -5,12 +5,13 @@ import './Player.css';
 
 type Props = {
   pokemonUrl: string | undefined;
+  playerCoord: number;
+  setPlayerCoord: (newPlayerCoord: number) => void;
 };
 
-export const Player = ({ pokemonUrl }: Props): JSX.Element => {
+export const Player = ({ pokemonUrl, setPlayerCoord, playerCoord }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
   const [isJumping, setIsJumping] = useState(false);
-  const [playerCoord, setplayerCoord] = useState(0);
 
   useEffect(() => {
     async function getPokemonsInfo() {
@@ -43,17 +44,19 @@ export const Player = ({ pokemonUrl }: Props): JSX.Element => {
     const step = Math.PI / 20;
     const intervalId = setInterval(() => {
       if (jumpProgress > Math.PI) {
-        setplayerCoord(0);
+        setPlayerCoord(0);
         setIsJumping(false);
         return;
       }
-      const coord = step ** 2 * 40;
-      setplayerCoord(coord * -50);
+      // const coord = step ** 2 * 40;
+      const coord = Math.sin(jumpProgress);
+
+      setPlayerCoord(coord * -50);
       jumpProgress += step;
     }, 50);
 
     return () => clearInterval(intervalId);
-  }, [isJumping]);
+  }, [isJumping, setPlayerCoord]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert}%`;
@@ -61,7 +64,7 @@ export const Player = ({ pokemonUrl }: Props): JSX.Element => {
 
   const stylesJump = {
     top: convertToCssUnits(playerCoord),
-    transition: 'top 0.75s',
+    transition: 'top 0.25s',
   };
 
   return (
@@ -71,5 +74,3 @@ export const Player = ({ pokemonUrl }: Props): JSX.Element => {
     </div>
   );
 };
-
-//

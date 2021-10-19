@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { Game } from './components/Game/Game';
+import { StateForGame } from './components/Game/StateForGame';
 import { SelectPokemons } from './components/SelectPokemons/SelectPokemons';
 import { PokemonsData } from './types/PokemonsData';
 
@@ -11,7 +11,7 @@ export const App = (): JSX.Element => {
   return (
     <div className='main-wrapper'>
       {isGameStarted ? (
-        <Game pokemonPlayer={pokemonPlayer} />
+        <StateForGame pokemonPlayer={pokemonPlayer} />
       ) : (
         <div>
           <SelectPokemons
