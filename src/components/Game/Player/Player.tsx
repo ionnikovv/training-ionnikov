@@ -29,7 +29,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowUp') {
+      if (event.key === ' ') {
         setIsJumping(true);
       }
     };
