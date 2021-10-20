@@ -17,16 +17,16 @@ body {
   height: 7vmin;
   border-radius: 1.5vmin;
   font-size: 3vmin;
-  letter-spacing: 10px;
+  letter-spacing: 2vmin;
   text-transform: uppercase;
 
   transition: cubic-bezier(0.215, 0.61, 0.355, 1) all 1s;
 
   background-color: #00da91e1;
-  border: 4px solid #ffd000;
+  border: 0.5vmin solid #ffd000;
   color: #ffd000;
 }
 .btn-start:hover {
-  border: 4px solid #003f2a;
+  border: 0.5vmin solid #003f2a;
   color: #003f2a;
 }

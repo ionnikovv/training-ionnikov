@@ -9,7 +9,7 @@ type Props = {
   onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
 
-const TICK = 125;
+const TICK = 40;
 
 export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
@@ -42,7 +42,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
   useEffect(() => {
     if (!isJumping) return;
 
-    let jumpProgress = 0.1;
+    let jumpProgress = 0.2;
     const step = Math.PI / 20;
     const intervalId = setInterval(() => {
       if (jumpProgress > Math.PI) {
@@ -50,7 +50,6 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
         setIsJumping(false);
         return;
       }
-      // const coord = step ** 2 * 40;
       const coord = Math.sin(jumpProgress);
 
       onChangePlayerCoord(coord * -50);
@@ -66,7 +65,6 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
   const stylesJump = {
     top: convertToCssUnits(playerCoord),
-    transition: 'top 0.25s',
   };
 
   return (

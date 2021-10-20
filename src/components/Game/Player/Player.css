@@ -9,10 +9,11 @@
 .pokemon {
   width: 8vmin;
   position: absolute;
-  top: 53%;
+  top: 24.5vmin;
+  left: 1.5vmin;
 }
 .skate {
   width: 11vmin;
   position: absolute;
-  top: 67%;
+  top: 30.5vmin;
 }
