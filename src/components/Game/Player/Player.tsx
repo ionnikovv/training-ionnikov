@@ -34,6 +34,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
       }
     };
     document.addEventListener('keydown', handleKeydown);
+
     return () => {
       document.removeEventListener('keydown', handleKeydown);
     };
@@ -41,9 +42,9 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
   useEffect(() => {
     if (!isJumping) return;
-
     let jumpProgress = 0.1;
     const step = Math.PI / 20;
+
     const intervalId = setInterval(() => {
       if (jumpProgress > Math.PI) {
         onChangePlayerCoord(0);
@@ -55,12 +56,15 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
       jumpProgress += step;
     }, TICK);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [isJumping, onChangePlayerCoord]);
 
   useEffect(() => {
     const handleKeyUp = (event: KeyboardEvent) => {
       if (event.key === ' ') {
+        console.log({ playerCoord });
         onChangePlayerCoord(0);
         setIsJumping(false);
       }
@@ -69,7 +73,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
     return () => {
       document.removeEventListener('keyup', handleKeyUp);
     };
-  }, [onChangePlayerCoord]);
+  }, [onChangePlayerCoord, playerCoord]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert}%`;
@@ -77,6 +81,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
   const stylesJump = {
     top: convertToCssUnits(playerCoord),
+    transition: 'top 0.09s',
   };
 
   return (
