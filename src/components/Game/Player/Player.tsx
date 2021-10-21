@@ -13,7 +13,6 @@ const TICK = 40;
 
 export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
-  const [isJumping, setIsJumping] = useState(false);
 
   useEffect(() => {
     async function getPokemonsInfo() {
@@ -28,52 +27,58 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
   }, [pokemonUrl]);
 
   useEffect(() => {
+    let intervalId: number | null = null;
+    let returnIntervalId: number | null = null;
+    let jumpProgress = 0;
+    const step = Math.PI / 20;
     const handleKeydown = (event: KeyboardEvent) => {
-      if (event.key === ' ') {
-        setIsJumping(true);
+      if (event.key === ' ' && !intervalId) {
+        intervalId = setInterval(() => {
+          if (jumpProgress > Math.PI && intervalId !== null) {
+            clearInterval(intervalId);
+            intervalId = null;
+            if (returnIntervalId) clearInterval(returnIntervalId);
+            returnIntervalId = null;
+            return;
+          }
+          const coord = Math.abs(Math.sin(jumpProgress));
+          onChangePlayerCoord(coord * -60);
+          jumpProgress += step;
+        }, TICK) as unknown as number;
+      }
+    };
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.key === ' ' && !returnIntervalId) {
+        returnIntervalId = setInterval(() => {
+          if (!intervalId) return;
+          clearInterval(intervalId);
+          if (jumpProgress > Math.PI && returnIntervalId !== null) {
+            jumpProgress = 0;
+            clearInterval(returnIntervalId);
+            intervalId = null;
+            returnIntervalId = null;
+            return;
+          }
+          if (jumpProgress < Math.PI / 2) {
+            const newProgress = Math.PI / 2 - jumpProgress;
+            jumpProgress += newProgress * 2;
+          }
+          const coord = Math.abs(Math.sin(jumpProgress));
+          onChangePlayerCoord(coord * -60);
+          jumpProgress += step;
+        }, TICK) as unknown as number;
+        if (intervalId) clearInterval(intervalId);
       }
     };
     document.addEventListener('keydown', handleKeydown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeydown);
-      setIsJumping(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isJumping) return;
-    let jumpProgress = 0.1;
-    const step = Math.PI / 20;
-
-    const intervalId = setInterval(() => {
-      if (jumpProgress > Math.PI) {
-        onChangePlayerCoord(0);
-        setIsJumping(false);
-        return;
-      }
-      const coord = Math.sin(jumpProgress / 2) ** 2;
-      onChangePlayerCoord(coord * -55);
-      jumpProgress += step;
-    }, TICK);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [isJumping, onChangePlayerCoord]);
-
-  useEffect(() => {
-    const handleKeyUp = (event: KeyboardEvent) => {
-      if (event.key === ' ') {
-        setIsJumping(false);
-        onChangePlayerCoord(0);
-      }
-    };
     document.addEventListener('keyup', handleKeyUp);
     return () => {
+      document.removeEventListener('keydown', handleKeydown);
       document.removeEventListener('keyup', handleKeyUp);
+      intervalId && clearInterval(intervalId);
+      returnIntervalId && clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord, playerCoord]);
+  }, [onChangePlayerCoord]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert}%`;
@@ -81,7 +86,6 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
   const stylesJump = {
     top: convertToCssUnits(playerCoord),
-    transition: 'top 0.1s',
   };
 
   return (
