@@ -7,13 +7,13 @@
   padding: 5px 0;
 }
 .pokemon {
-  width: 8vmin;
+  width: 6vmin;
   position: absolute;
-  top: 24.5vmin;
+  top: 28vmin;
   left: 1.5vmin;
 }
 .skate {
-  width: 11vmin;
+  width: 8vmin;
   position: absolute;
-  top: 30.5vmin;
+  top: 32vmin;
 }

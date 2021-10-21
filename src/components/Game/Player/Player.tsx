@@ -43,7 +43,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
   useEffect(() => {
     if (!isJumping) return;
-    let jumpProgress = 0.3;
+    let jumpProgress = 0.1;
     const step = Math.PI / 20;
 
     const intervalId = setInterval(() => {
@@ -52,7 +52,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
         setIsJumping(false);
         return;
       }
-      const coord = Math.sin(jumpProgress) ** 2;
+      const coord = Math.sin(jumpProgress / 2) ** 2;
       onChangePlayerCoord(coord * -55);
       jumpProgress += step;
     }, TICK);
@@ -65,8 +65,8 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
   useEffect(() => {
     const handleKeyUp = (event: KeyboardEvent) => {
       if (event.key === ' ') {
-        onChangePlayerCoord(0);
         setIsJumping(false);
+        onChangePlayerCoord(0);
       }
     };
     document.addEventListener('keyup', handleKeyUp);
