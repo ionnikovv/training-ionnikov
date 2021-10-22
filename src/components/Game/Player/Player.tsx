@@ -31,8 +31,10 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
     let returnIntervalId: number | null = null;
     let jumpProgress = 0;
     const step = Math.PI / 20;
-    const handleKeydown = (event: KeyboardEvent) => {
-      if (event.key === ' ' && !intervalId) {
+
+    const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
+      if (event instanceof KeyboardEvent && event.key !== ' ') return;
+      if (!intervalId) {
         intervalId = setInterval(() => {
           if (jumpProgress > Math.PI && intervalId !== null) {
             clearInterval(intervalId);
@@ -47,8 +49,10 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
         }, TICK) as unknown as number;
       }
     };
-    const handleKeyUp = (event: KeyboardEvent) => {
-      if (event.key === ' ' && !returnIntervalId) {
+
+    const handleKeyUp = (event: KeyboardEvent | TouchEvent) => {
+      if (event instanceof KeyboardEvent && event.key !== ' ') return;
+      if (!returnIntervalId) {
         returnIntervalId = setInterval(() => {
           if (!intervalId) return;
           clearInterval(intervalId);
@@ -70,11 +74,17 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
         if (intervalId) clearInterval(intervalId);
       }
     };
+
     document.addEventListener('keydown', handleKeydown);
     document.addEventListener('keyup', handleKeyUp);
+
+    document.addEventListener('touchstart', handleKeydown, false);
+    document.addEventListener('touchend', handleKeyUp, false);
     return () => {
       document.removeEventListener('keydown', handleKeydown);
       document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('touchstart', handleKeydown, false);
+      document.removeEventListener('touchend', handleKeyUp, false);
       intervalId && clearInterval(intervalId);
       returnIntervalId && clearInterval(returnIntervalId);
     };
