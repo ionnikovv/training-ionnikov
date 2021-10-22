@@ -30,7 +30,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
     let jumpProgress = 0;
-    const step = Math.PI / 20;
+    const step = Math.PI / 100;
 
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
@@ -77,7 +77,6 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
     document.addEventListener('keydown', handleKeydown);
     document.addEventListener('keyup', handleKeyUp);
-
     document.addEventListener('touchstart', handleKeydown, false);
     document.addEventListener('touchend', handleKeyUp, false);
     return () => {
