@@ -4,8 +4,9 @@
   background-color: black;
   position: absolute;
 
+  box-shadow: 30px 10px 15px rgb(0 0 0 / 0.5);
+
   left: 100%;
-  /* top: 10vmin; */
   bottom: 10vmin;
   background-image: url('./../../../assets/brick.jpg');
 }
