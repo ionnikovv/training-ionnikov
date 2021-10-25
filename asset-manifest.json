@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/training-ionnikov/static/css/main.ce545a39.chunk.css",
-    "main.js": "/training-ionnikov/static/js/main.d47cfb1e.chunk.js",
-    "main.js.map": "/training-ionnikov/static/js/main.d47cfb1e.chunk.js.map",
+    "main.css": "/training-ionnikov/static/css/main.5c30bdfd.chunk.css",
+    "main.js": "/training-ionnikov/static/js/main.82d3c63c.chunk.js",
+    "main.js.map": "/training-ionnikov/static/js/main.82d3c63c.chunk.js.map",
     "runtime-main.js": "/training-ionnikov/static/js/runtime-main.272ee47d.js",
     "runtime-main.js.map": "/training-ionnikov/static/js/runtime-main.272ee47d.js.map",
     "static/js/2.1f5d7858.chunk.js": "/training-ionnikov/static/js/2.1f5d7858.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.bc8f3305.chunk.js": "/training-ionnikov/static/js/3.bc8f3305.chunk.js",
     "static/js/3.bc8f3305.chunk.js.map": "/training-ionnikov/static/js/3.bc8f3305.chunk.js.map",
     "index.html": "/training-ionnikov/index.html",
-    "static/css/main.ce545a39.chunk.css.map": "/training-ionnikov/static/css/main.ce545a39.chunk.css.map",
+    "static/css/main.5c30bdfd.chunk.css.map": "/training-ionnikov/static/css/main.5c30bdfd.chunk.css.map",
     "static/js/2.1f5d7858.chunk.js.LICENSE.txt": "/training-ionnikov/static/js/2.1f5d7858.chunk.js.LICENSE.txt",
     "static/media/Game.css": "/training-ionnikov/static/media/game-background.d91f2f1a.png",
     "static/media/three-dots.b98a8c76.svg": "/training-ionnikov/static/media/three-dots.b98a8c76.svg"
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.272ee47d.js",
     "static/js/2.1f5d7858.chunk.js",
-    "static/css/main.ce545a39.chunk.css",
-    "static/js/main.d47cfb1e.chunk.js"
+    "static/css/main.5c30bdfd.chunk.css",
+    "static/js/main.82d3c63c.chunk.js"
   ]
 }
