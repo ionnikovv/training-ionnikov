@@ -34,6 +34,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
 
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
+
       if (!intervalId) {
         intervalId = setInterval(() => {
           if (jumpProgress > Math.PI && intervalId !== null) {
@@ -84,8 +85,10 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('touchstart', handleKeydown, false);
       document.removeEventListener('touchend', handleKeyUp, false);
-      intervalId && clearInterval(intervalId);
-      returnIntervalId && clearInterval(returnIntervalId);
+      if (intervalId && returnIntervalId) {
+        clearInterval(intervalId);
+        clearInterval(returnIntervalId);
+      }
     };
   }, [onChangePlayerCoord]);
 
