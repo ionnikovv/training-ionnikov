@@ -1,19 +1,19 @@
 import './Obstacle.css';
+import { ObstacleEntity } from '../../../types/GameObstacle';
 
-type Props = {
-  height: number;
-  x: number;
-  y: number;
-};
+type Props = ObstacleEntity;
+export const GameObstacle = ({ height, x }: Props): JSX.Element => {
+  const convertToCssUnits = (valueToConvert: number): string | undefined => {
+    return `${valueToConvert}%`;
+  };
 
-export const GameObstacle = ({ height, x, y }: Props): JSX.Element => {
+  const ObstacleTransition = {
+    left: convertToCssUnits(x),
+    height: height,
+  };
   return (
-    <div className='obstacle-wrapper'>
-      <div>
-        {height}
-        {x}
-        {y}
-      </div>
+    <div className='obstacle-wrapper' style={ObstacleTransition}>
+      <div></div>
     </div>
   );
 };

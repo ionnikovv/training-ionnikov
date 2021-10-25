@@ -31,6 +31,8 @@
   background-size: 100% 100%;
   animation: animatedBackground 10s linear infinite;
   animation-fill-mode: forwards;
+
+  position: relative;
 }
 
 .game-field {

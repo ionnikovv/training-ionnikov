@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { TICK } from '../../../ConstantValues/ConstValues';
 import { isPokemonInfoResponse } from '../../../types/PokemonsData';
 import skate from './../../../assets/skate.png';
 import './Player.css';
@@ -8,8 +9,6 @@ type Props = {
   playerCoord: number;
   onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
-
-const TICK = 40;
 
 export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
