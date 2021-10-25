@@ -17,7 +17,7 @@
   display: flex;
   justify-content: center;
   align-self: center;
-  border: 0.6vmin solid rgb(1, 11, 68);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 1);
   border-radius: 0.9vmin;
   width: 50%;
   height: 45vmin;
@@ -31,7 +31,7 @@
   background-size: 100% 100%;
   animation: animatedBackground 10s linear infinite;
   animation-fill-mode: forwards;
-
+  box-shadow: 100px;
   position: relative;
 }
 
