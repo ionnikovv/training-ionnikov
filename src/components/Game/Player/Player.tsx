@@ -85,10 +85,8 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('touchstart', handleKeydown, false);
       document.removeEventListener('touchend', handleKeyUp, false);
-      if (intervalId && returnIntervalId) {
-        clearInterval(intervalId);
-        clearInterval(returnIntervalId);
-      }
+      if (intervalId) clearInterval(intervalId);
+      if (returnIntervalId) clearInterval(returnIntervalId);
     };
   }, [onChangePlayerCoord]);
 
