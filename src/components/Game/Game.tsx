@@ -38,20 +38,11 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     const intervalId = setInterval(() => {
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => {
+          if (obstacle.x === 0) obstacles.shift();
           return { ...obstacle, x: obstacle.x - 1 };
         })
       );
     }, TICK / 2) as unknown as number;
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setObstacles((obstacles) => obstacles.filter((obstacle) => obstacle.x !== 0));
-    }, TICK) as unknown as number;
 
     return () => {
       clearInterval(intervalId);
@@ -65,7 +56,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         <div className='game-block'>
           <div className='game-field'>
             {obstacles.map((obstacle, index) => (
-              <GameObstacle {...obstacle} key={index} />
+              <GameObstacle {...obstacle} key={`obstacle_${index}`} />
             ))}
             <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} onChangePlayerCoord={setPlayerCoord} />
           </div>

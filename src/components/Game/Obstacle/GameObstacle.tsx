@@ -13,7 +13,6 @@ export const GameObstacle = ({ height, x }: Props): JSX.Element => {
   const ObstacleTransition = {
     left: convertToCssUnits(x),
     height: convertHeightToCssUnits(height),
-    transition: 'all 0.005s'
   };
   return <div className='obstacle-wrapper' style={ObstacleTransition}></div>;
 };
