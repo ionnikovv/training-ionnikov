@@ -38,10 +38,19 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     const intervalId = setInterval(() => {
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => {
-          if (obstacle.x === 0) console.log('done');
           return { ...obstacle, x: obstacle.x - 1 };
         })
       );
+    }, TICK) as unknown as number;
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setObstacles((obstacles) => obstacles.filter((obstacle) => obstacle.x !== 0));
     }, TICK) as unknown as number;
 
     return () => {
