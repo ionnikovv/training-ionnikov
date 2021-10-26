@@ -4,7 +4,6 @@
   position: absolute;
 
   box-shadow: 3vmin 1vmin 2vmin rgb(0 0 0 / 0.5);
-  /* transition: left 1s; */
   left: 100%;
   bottom: 10.4vmin;
   background-image: url('./../../../assets/brick.jpg');

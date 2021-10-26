@@ -11,14 +11,15 @@ type Props = {
 };
 
 const generateObstacle = (): ObstacleEntity => {
-  const height = Math.random() * (5 - 21) + 21;
+  const height = Math.floor(Math.random() * (20 - 80) + 80);
   const y = Math.random() * (150 - 100) + 100;
   return { height, x: 100, y };
 };
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 21, x: 100, y: 100 }]);
+  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 20, x: 100, y: 100 }]);
+  const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -58,6 +59,15 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     };
   }, []);
 
+  useEffect(() => {
+    obstacles.map((obstacle) => {
+      if (obstacle.x === 10) {
+        if (Math.floor(playerCoord * -1) >= obstacle.height) console.log('DONE X', playerCoord);
+        else setIsGameSessionStarted(true);
+      }
+    });
+  }, [obstacles, playerCoord]);
+
   return (
     <div className='game-wrapper'>
       <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
@@ -70,6 +80,18 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
             <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} onChangePlayerCoord={setPlayerCoord} />
           </div>
         </div>
+        {!isGameSessionStarted && (
+          <div className='btn-start-wrapper'>
+            <button
+              className='btn-start'
+              onClick={() => {
+                setIsGameSessionStarted(true);
+              }}
+            >
+              Start
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
