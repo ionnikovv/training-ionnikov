@@ -17,7 +17,7 @@
   display: flex;
   justify-content: center;
   align-self: center;
-  box-shadow: 0 2vmin 5vmin rgb(0 0 0 / 1);
+  box-shadow: 0 2vmin 8vmin rgb(1, 11, 68);
   border-radius: 0.9vmin;
   width: 50%;
   height: 45vmin;
