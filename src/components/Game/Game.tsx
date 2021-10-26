@@ -20,9 +20,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 23, x: 100, y: 100 }]);
 
-  const randomIntervalGeneration = () => {
-    return Math.random() * (70 - 50) + 50;
-  };
+  const randomIntervalGeneration = () => Math.random() * (70 - 50) + 50;
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -32,12 +30,18 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
     return () => {
       clearInterval(intervalId);
+      setObstacles(() => []);
     };
   }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setObstacles((obstacles) => obstacles.map((obstacle) => ({ ...obstacle, x: obstacle.x - 1 })));
+      setObstacles((obstacles) =>
+        obstacles.map((obstacle) => {
+          if (obstacle.x === 0) console.log('done');
+          return { ...obstacle, x: obstacle.x - 1 };
+        })
+      );
     }, TICK) as unknown as number;
 
     return () => {
@@ -51,8 +55,8 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       <div className='game-block-container'>
         <div className='game-block'>
           <div className='game-field'>
-            {obstacles.map((obstacle) => (
-              <GameObstacle {...obstacle} />
+            {obstacles.map((obstacle, index) => (
+              <GameObstacle {...obstacle} key={index} />
             ))}
             <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} onChangePlayerCoord={setPlayerCoord} />
           </div>
