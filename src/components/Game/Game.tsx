@@ -11,14 +11,14 @@ type Props = {
 };
 
 const generateObstacle = (): ObstacleEntity => {
-  const height = Math.random() * (5 - 23) + 23;
+  const height = Math.random() * (5 - 21) + 21;
   const y = Math.random() * (150 - 100) + 100;
   return { height, x: 100, y };
 };
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 23, x: 100, y: 100 }]);
+  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 21, x: 100, y: 100 }]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -27,11 +27,10 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
-    }, TICK * 50) as unknown as number;
+    }, TICK * 70) as unknown as number;
 
     return () => {
       clearInterval(intervalId);
-      setObstacles(() => []);
     };
   }, []);
 
@@ -42,7 +41,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           return { ...obstacle, x: obstacle.x - 1 };
         })
       );
-    }, TICK) as unknown as number;
+    }, TICK / 2) as unknown as number;
 
     return () => {
       clearInterval(intervalId);
