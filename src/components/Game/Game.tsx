@@ -20,11 +20,15 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 23, x: 100, y: 100 }]);
 
+  const randomIntervalGeneration = () => {
+    return Math.random() * (70 - 50) + 50;
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
-    }, TICK * 70) as unknown as number;
+    }, TICK * randomIntervalGeneration()) as unknown as number;
 
     return () => {
       clearInterval(intervalId);

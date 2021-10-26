@@ -1,7 +1,6 @@
 .obstacle-wrapper {
   height: 10vmin;
-  width: 8vmin;
-  background-color: black;
+  width: 5vmin;
   position: absolute;
 
   box-shadow: 30px 10px 15px rgb(0 0 0 / 0.5);
