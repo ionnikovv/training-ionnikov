@@ -21,6 +21,14 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 20, x: 100, y: 100 }]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
 
+  const onGameStarted = (e: KeyboardEvent | MouseEvent<HTMLButtonElement>): void => {
+    if (e instanceof KeyboardEvent && e.key === 'Enter') {
+      document.getElementsByClassName('btn-start').addEventListener('keydown', () => {
+        setIsGameSessionStarted(true);
+      });
+    }
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       const randomValue = Math.random() * (70 - 50) + 50;
@@ -33,9 +41,13 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [isGameSessionStarted]);
 
   useEffect(() => {
+    if (!isGameSessionStarted) {
+      setObstacles([]);
+      return;
+    }
     const intervalId = setInterval(() => {
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => {
@@ -43,11 +55,10 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         })
       );
     }, TICK / 2) as unknown as number;
-
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [isGameSessionStarted]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -62,8 +73,10 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   useEffect(() => {
     obstacles.map((obstacle) => {
       if (obstacle.x === 10) {
-        if (Math.floor(playerCoord * -1) >= obstacle.height) console.log('DONE X', playerCoord);
-        else setIsGameSessionStarted(true);
+        if (Math.floor(playerCoord * -1) <= obstacle.height) {
+          setPlayerCoord(0);
+          setIsGameSessionStarted(false);
+        }
       }
     });
   }, [obstacles, playerCoord]);
@@ -72,22 +85,22 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     <div className='game-wrapper'>
       <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
       <div className='game-block-container'>
-        <div className='game-block'>
+        <div className={isGameSessionStarted ? 'game-block animated' : 'game-block'}>
           <div className='game-field'>
             {obstacles.map((obstacle, index) => (
               <GameObstacle {...obstacle} key={index} />
             ))}
-            <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} onChangePlayerCoord={setPlayerCoord} />
+            <Player
+              isGameStarted={isGameSessionStarted}
+              pokemonUrl={pokemonPlayer?.url}
+              playerCoord={playerCoord}
+              onChangePlayerCoord={setPlayerCoord}
+            />
           </div>
         </div>
         {!isGameSessionStarted && (
           <div className='btn-start-wrapper'>
-            <button
-              className='btn-start'
-              onClick={() => {
-                setIsGameSessionStarted(true);
-              }}
-            >
+            <button className='btn-start' onClick={(e) => onGameStarted(e)}>
               Start
             </button>
           </div>

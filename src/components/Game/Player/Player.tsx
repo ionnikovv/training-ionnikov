@@ -7,10 +7,11 @@ import './Player.css';
 type Props = {
   pokemonUrl: string | undefined;
   playerCoord: number;
+  isGameStarted: boolean;
   onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
 
-export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props): JSX.Element => {
+export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameStarted }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
 
   useEffect(() => {
@@ -79,11 +80,12 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
         if (intervalId) clearInterval(intervalId);
       }
     };
-
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keyup', handleKeyUp);
-    document.addEventListener('touchstart', handleKeydown, false);
-    document.addEventListener('touchend', handleKeyUp, false);
+    if (isGameStarted) {
+      document.addEventListener('keydown', handleKeydown);
+      document.addEventListener('keyup', handleKeyUp);
+      document.addEventListener('touchstart', handleKeydown, false);
+      document.addEventListener('touchend', handleKeyUp, false);
+    }
     return () => {
       document.removeEventListener('keydown', handleKeydown);
       document.removeEventListener('keyup', handleKeyUp);
@@ -92,7 +94,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
       if (intervalId) clearInterval(intervalId);
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord]);
+  }, [onChangePlayerCoord, isGameStarted]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert}%`;
