@@ -21,14 +21,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 25, x: 100, y: 100 }]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
 
-  // const onGameStarted = (e: KeyboardEvent | MouseEvent<HTMLButtonElement>): void => {
-  //   if (e instanceof KeyboardEvent && e.key === 'Enter') {
-  //     document.getElementsByClassName('btn-start').addEventListener('keydown', () => {
-  //       setIsGameSessionStarted(true);
-  //     });
-  //   }
-  // };
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
@@ -73,12 +65,9 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   useEffect(() => {
     obstacles.forEach((obstacle) => {
       if (obstacle.x <= 11 && -playerCoord <= obstacle.height) {
-        console.log(-playerCoord, obstacle.height);
-        // eslint-disable-next-line no-debugger
-        debugger;
         setPlayerCoord(0);
         setIsGameSessionStarted(false);
-      } else console.log('NOT', -playerCoord, obstacle.height);
+      }
     });
   }, [obstacles, playerCoord]);
 
