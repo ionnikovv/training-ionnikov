@@ -30,7 +30,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
     let jumpProgress = 0;
-    const step = Math.PI / 70;
+    const step = Math.PI / 60;
 
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;

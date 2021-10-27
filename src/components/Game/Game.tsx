@@ -18,17 +18,17 @@ const generateObstacle = (): ObstacleEntity => {
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 25, x: 100, y: 100 }]);
+  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
-      const randomValue = Math.random() * (101 - 50) + 50;
+      const randomValue = Math.random() * (100 - 50) + 50;
       if (randomValue > 100) return;
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
-    }, TICK * 100) as unknown as number;
+    }, TICK * 80) as unknown as number;
 
     return () => {
       clearInterval(intervalId);
@@ -46,7 +46,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           return { ...obstacle, x: obstacle.x - 1 };
         })
       );
-    }, TICK * 2) as unknown as number;
+    }, TICK) as unknown as number;
     return () => {
       clearInterval(intervalId);
     };
@@ -64,7 +64,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
-      if (obstacle.x <= 11 && -playerCoord <= obstacle.height) {
+      if (obstacle.x <= 9 && -playerCoord <= obstacle.height) {
         setPlayerCoord(0);
         setIsGameSessionStarted(false);
       }
