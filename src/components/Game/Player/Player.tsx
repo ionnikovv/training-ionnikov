@@ -46,7 +46,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
             return;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(coord * -60);
+          onChangePlayerCoord(Math.floor(coord * -60));
           jumpProgress += step;
         };
         intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
@@ -72,7 +72,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
             jumpProgress += newProgress * 2;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(coord * -60);
+          onChangePlayerCoord(Math.floor(coord * -60));
           jumpProgress += step;
         };
         returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;

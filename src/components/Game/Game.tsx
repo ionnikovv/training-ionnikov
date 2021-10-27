@@ -11,29 +11,29 @@ type Props = {
 };
 
 const generateObstacle = (): ObstacleEntity => {
-  const height = Math.floor(Math.random() * (20 - 80) + 80);
+  const height = Math.floor(Math.random() * (20 - 60) + 60);
   const y = Math.random() * (150 - 100) + 100;
   return { height, x: 100, y };
 };
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 20, x: 100, y: 100 }]);
+  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
 
-  const onGameStarted = (e: KeyboardEvent | MouseEvent<HTMLButtonElement>): void => {
-    if (e instanceof KeyboardEvent && e.key === 'Enter') {
-      document.getElementsByClassName('btn-start').addEventListener('keydown', () => {
-        setIsGameSessionStarted(true);
-      });
-    }
-  };
+  // const onGameStarted = (e: KeyboardEvent | MouseEvent<HTMLButtonElement>): void => {
+  //   if (e instanceof KeyboardEvent && e.key === 'Enter') {
+  //     document.getElementsByClassName('btn-start').addEventListener('keydown', () => {
+  //       setIsGameSessionStarted(true);
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      if (!isGameSessionStarted) return;
       const randomValue = Math.random() * (70 - 50) + 50;
       if (randomValue > 100) return;
-
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
     }, TICK * 70) as unknown as number;
@@ -72,11 +72,9 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   useEffect(() => {
     obstacles.map((obstacle) => {
-      if (obstacle.x === 10) {
-        if (Math.floor(playerCoord * -1) <= obstacle.height) {
-          setPlayerCoord(0);
-          setIsGameSessionStarted(false);
-        }
+      if (obstacle.x <= 10 && Math.floor(playerCoord * -1.6) <= Math.floor(obstacle.height * 1.6)) {
+        setPlayerCoord(0);
+        setIsGameSessionStarted(false);
       }
     });
   }, [obstacles, playerCoord]);
@@ -100,7 +98,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         </div>
         {!isGameSessionStarted && (
           <div className='btn-start-wrapper'>
-            <button className='btn-start' onClick={(e) => onGameStarted(e)}>
+            <button className='btn-start' onClick={() => setIsGameSessionStarted(true)}>
               Start
             </button>
           </div>
