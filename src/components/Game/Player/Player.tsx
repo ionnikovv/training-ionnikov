@@ -30,7 +30,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
     let jumpProgress = 0;
-    const step = Math.PI / 60;
+    const step = Math.PI / 70;
 
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
@@ -97,8 +97,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
   }, [onChangePlayerCoord, isGameStarted]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
-    console.log(valueToConvert);
-    return `${100 + valueToConvert}%`;
+    return `${valueToConvert + 100}%`;
   };
 
   const stylesJump = {

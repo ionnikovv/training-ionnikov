@@ -7,4 +7,6 @@
   left: 100%;
   bottom: 10.4vmin;
   background-image: url('./../../../assets/brick.jpg');
+
+  border: 1px solid black;
 }

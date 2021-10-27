@@ -11,14 +11,14 @@ type Props = {
 };
 
 const generateObstacle = (): ObstacleEntity => {
-  const height = Math.floor(Math.random() * (20 - 60) + 60);
+  const height = Math.floor(Math.random() * (65 - 25) + 25);
   const y = Math.random() * (150 - 100) + 100;
   return { height, x: 100, y };
 };
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
+  const [obstacles, setObstacles] = useState<ObstacleEntity[]>([{ height: 25, x: 100, y: 100 }]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
 
   // const onGameStarted = (e: KeyboardEvent | MouseEvent<HTMLButtonElement>): void => {
@@ -32,11 +32,11 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
-      const randomValue = Math.random() * (70 - 50) + 50;
+      const randomValue = Math.random() * (101 - 50) + 50;
       if (randomValue > 100) return;
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
-    }, TICK * 70) as unknown as number;
+    }, TICK * 100) as unknown as number;
 
     return () => {
       clearInterval(intervalId);
@@ -54,7 +54,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           return { ...obstacle, x: obstacle.x - 1 };
         })
       );
-    }, TICK / 2) as unknown as number;
+    }, TICK * 2) as unknown as number;
     return () => {
       clearInterval(intervalId);
     };
@@ -72,10 +72,13 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
-      if (obstacle.x <= 10 && Math.floor(playerCoord) <= Math.floor(obstacle.height)) {
+      if (obstacle.x <= 11 && -playerCoord <= obstacle.height) {
+        console.log(-playerCoord, obstacle.height);
+        // eslint-disable-next-line no-debugger
+        debugger;
         setPlayerCoord(0);
         setIsGameSessionStarted(false);
-      }
+      } else console.log('NOT', -playerCoord, obstacle.height);
     });
   }, [obstacles, playerCoord]);
 

@@ -5,17 +5,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 5px 0;
+  /* padding: 0.5vmin 0; */
+  /* top: -100vmin; */
 }
 .pokemon {
   width: 6vmin;
-  /* position: relative; */
-  /* top: 0; */
-  /* left: 0; */
+  position: relative;
+  top: 1vmin;
 }
 .skate {
   width: 8vmin;
   position: relative;
-  top: -10px;
-  /* left: 0; */
+  top: -0.5vmin;
 }
