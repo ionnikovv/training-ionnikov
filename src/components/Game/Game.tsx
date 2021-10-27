@@ -71,8 +71,8 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    obstacles.map((obstacle) => {
-      if (obstacle.x <= 10 && Math.floor(playerCoord * -1.6) <= Math.floor(obstacle.height * 1.6)) {
+    obstacles.forEach((obstacle) => {
+      if (obstacle.x <= 10 && Math.floor(playerCoord) <= Math.floor(obstacle.height)) {
         setPlayerCoord(0);
         setIsGameSessionStarted(false);
       }

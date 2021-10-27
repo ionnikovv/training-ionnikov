@@ -46,7 +46,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
             return;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(Math.floor(coord * -60));
+          onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgress += step;
         };
         intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
@@ -72,7 +72,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
             jumpProgress += newProgress * 2;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(Math.floor(coord * -60));
+          onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgress += step;
         };
         returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
@@ -97,7 +97,8 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
   }, [onChangePlayerCoord, isGameStarted]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
-    return `${valueToConvert}%`;
+    console.log(valueToConvert);
+    return `${100 + valueToConvert}%`;
   };
 
   const stylesJump = {
