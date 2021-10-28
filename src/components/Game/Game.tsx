@@ -64,7 +64,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
-      if (obstacle.x <= 9 && -playerCoord <= obstacle.height && -playerCoord <= obstacle.y) {
+      if (obstacle.x <= 9 && -playerCoord <= obstacle.height) {
         // eslint-disable-next-line no-debugger
         debugger;
         setPlayerCoord(0);
