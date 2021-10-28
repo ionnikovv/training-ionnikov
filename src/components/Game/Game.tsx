@@ -29,7 +29,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
-    }, TICK * 70) as unknown as number;
+    }, TICK * 70);
 
     return () => {
       clearInterval(intervalId);
@@ -41,7 +41,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => ({ ...obstacle, x: obstacle.x - 1 })).filter((obstacle) => obstacle.x !== 0)
       );
-    }, TICK / 2) as unknown as number;
+    }, TICK / 2);
 
     return () => {
       clearInterval(intervalId);
