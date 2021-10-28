@@ -52,9 +52,11 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
-      if (obstacle.x <= 12 && -playerCoord <= obstacle.height) {
-        setPlayerCoord(0);
+      if (obstacle.x <= 11 && -playerCoord <= obstacle.height) {
+        const IntervalId = setTimeout(() => {
+          setPlayerCoord(0);
         setIsGameSessionStarted(false);
+        }, TICK)
       }
     });
   }, [obstacles, playerCoord]);
