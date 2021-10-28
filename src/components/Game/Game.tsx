@@ -55,7 +55,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         <div className='game-block'>
           <div className='game-field'>
             {obstacles.map((obstacle) => (
-              <GameObstacle {...obstacle} key={obstacle.id} />
+              <GameObstacle {...obstacle} key={obstacle?.id} />
             ))}
             <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} onChangePlayerCoord={setPlayerCoord} />
           </div>
