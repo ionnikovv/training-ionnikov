@@ -1,11 +1,11 @@
 .obstacle-wrapper {
-  height: 200px;
-  width: 80px;
-  background-color: black;
+  height: 10vmin;
+  width: 4vmin;
   position: absolute;
-
-  left: 65%;
-  top: 55%;
-
+  box-shadow: 3vmin 1vmin 2vmin rgb(0 0 0 / 0.5);
+  left: 100%;
+  bottom: 10.4vmin;
   background-image: url('./../../../assets/brick.jpg');
+
+  transition: 'all 0.005s';
 }

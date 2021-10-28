@@ -26,8 +26,6 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-
-  /* margin-bottom: 50px; */
 }
 .pokemon-common-info {
   display: flex;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { TICK } from '../../../ConstantValues/ConstValues';
 import { isPokemonInfoResponse } from '../../../types/PokemonsData';
 import skate from './../../../assets/skate.png';
 import './Player.css';
@@ -6,12 +7,11 @@ import './Player.css';
 type Props = {
   pokemonUrl: string | undefined;
   playerCoord: number;
+  isGameStarted: boolean;
   onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
 
-const TICK = 40;
-
-export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props): JSX.Element => {
+export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameStarted }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
 
   useEffect(() => {
@@ -30,31 +30,34 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
     let jumpProgress = 0;
-    const step = Math.PI / 100;
+    const step = Math.PI / 60;
 
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
 
       if (!intervalId) {
-        intervalId = setInterval(() => {
+        const handleIntervalKeydown = () => {
           if (jumpProgress > Math.PI && intervalId !== null) {
             clearInterval(intervalId);
             intervalId = null;
+            jumpProgress = 0;
             if (returnIntervalId) clearInterval(returnIntervalId);
             returnIntervalId = null;
             return;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(coord * -60);
+          onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgress += step;
-        }, TICK) as unknown as number;
+        };
+        intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
+        handleIntervalKeydown();
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
-        returnIntervalId = setInterval(() => {
+        const handleIntervalKeyUp = () => {
           if (!intervalId) return;
           clearInterval(intervalId);
           if (jumpProgress > Math.PI && returnIntervalId !== null) {
@@ -69,17 +72,20 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
             jumpProgress += newProgress * 2;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(coord * -60);
+          onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgress += step;
-        }, TICK) as unknown as number;
+        };
+        returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
+        handleIntervalKeyUp();
         if (intervalId) clearInterval(intervalId);
       }
     };
-
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keyup', handleKeyUp);
-    document.addEventListener('touchstart', handleKeydown, false);
-    document.addEventListener('touchend', handleKeyUp, false);
+    if (isGameStarted) {
+      document.addEventListener('keydown', handleKeydown);
+      document.addEventListener('keyup', handleKeyUp);
+      document.addEventListener('touchstart', handleKeydown, false);
+      document.addEventListener('touchend', handleKeyUp, false);
+    }
     return () => {
       document.removeEventListener('keydown', handleKeydown);
       document.removeEventListener('keyup', handleKeyUp);
@@ -88,10 +94,10 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord }: Props):
       if (intervalId) clearInterval(intervalId);
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord]);
+  }, [onChangePlayerCoord, isGameStarted]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
-    return `${valueToConvert}%`;
+    return `${valueToConvert + 100}%`;
   };
 
   const stylesJump = {
