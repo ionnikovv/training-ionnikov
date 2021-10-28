@@ -3,13 +3,12 @@ import { ObstacleEntity } from '../../../types/GameObstacle';
 
 type Props = ObstacleEntity;
 
-export const GameObstacle = ({ height, x }: Props): JSX.Element => {
+export const GameObstacle = ({ height, x, y }: Props): JSX.Element => {
   const convertToCssUnits = (valueToConvert: number): string | undefined => `${valueToConvert}%`;
-  const convertHeightToCssUnits = (valueToConvert: number): string | undefined => `${valueToConvert * 0.2}vw`;
   const ObstacleTransition = {
     left: convertToCssUnits(x),
-    height: convertHeightToCssUnits(height),
-    transition: 'all 0.005s',
+    height: convertToCssUnits(height),
+    transform: `translate(0, ${-y}%)`,
   };
   return <div className='obstacle-wrapper' style={ObstacleTransition}></div>;
 };

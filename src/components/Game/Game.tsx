@@ -11,8 +11,8 @@ type Props = {
 };
 
 const generateObstacle = (): ObstacleEntity => {
-  const height = Math.floor(Math.random() * (65 - 25) + 25);
-  const y = Math.random() * (150 - 100) + 100;
+  const height = Math.floor(Math.random() * (20 - 60) + 60);
+  const y = Math.random() * (0 - 50) + 50;
   return { height, x: 100, y };
 };
 
@@ -64,7 +64,9 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
-      if (obstacle.x <= 9 && -playerCoord <= obstacle.height) {
+      if (obstacle.x <= 9 && -playerCoord <= obstacle.height && -playerCoord <= obstacle.y) {
+        // eslint-disable-next-line no-debugger
+        debugger;
         setPlayerCoord(0);
         setIsGameSessionStarted(false);
       }
@@ -77,15 +79,15 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       <div className='game-block-container'>
         <div className={isGameSessionStarted ? 'game-block animated' : 'game-block'}>
           <div className='game-field'>
-            {obstacles.map((obstacle, index) => (
-              <GameObstacle {...obstacle} key={index} />
-            ))}
             <Player
               isGameStarted={isGameSessionStarted}
               pokemonUrl={pokemonPlayer?.url}
               playerCoord={playerCoord}
               onChangePlayerCoord={setPlayerCoord}
             />
+            {obstacles.map((obstacle, index) => (
+              <GameObstacle {...obstacle} key={index} />
+            ))}
           </div>
         </div>
         {!isGameSessionStarted && (
