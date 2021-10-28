@@ -16,8 +16,7 @@ const generateObstacle = (): ObstacleEntity => {
   const height = Math.random() * (20 - 60) + 60;
   const y = Math.random() * (0 - 50) + 50;
   return { height, x: 100, y, id: ObstacleID++ };
-
-
+};
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
@@ -50,10 +49,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       clearInterval(intervalId);
     };
   }, [isGameSessionStarted]);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
