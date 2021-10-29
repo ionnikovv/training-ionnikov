@@ -56,6 +56,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       if (obstacle.x <= 11 && -playerCoord <= obstacle.height) {
         setTimeout(() => {
           setPlayerCoord(0);
+          setScore(0);
           setIsGameSessionStarted(false);
         }, TICK);
       } else if (obstacle.x <= 11 && -playerCoord >= obstacle.height) setScore(obstacle.id);
@@ -65,7 +66,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   return (
     <div className='main-game-wrapper'>
       <div className='game-wrapper'>
-        <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
+        <span className='game-logo'>RUN! {pokemonPlayer?.name}! RUN!</span>
 
         <div className='game-block-container'>
           <div className={isGameSessionStarted ? 'game-block animated' : 'game-block'}>
