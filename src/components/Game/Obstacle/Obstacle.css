@@ -3,6 +3,7 @@
   width: 4vmin;
   position: absolute;
   box-shadow: 3vmin 1vmin 2vmin rgb(0 0 0 / 0.5);
+  transition: all 0.005s;
   left: 100%;
   bottom: 10.4vmin;
   background-image: url('./../../../assets/brick.jpg');

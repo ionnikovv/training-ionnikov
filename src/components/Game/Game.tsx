@@ -6,16 +6,17 @@ import './Game.css';
 import { GameObstacle } from './Obstacle/GameObstacle';
 import { Player } from './Player/Player';
 
+let ObstacleID = 1;
+
 type Props = {
   pokemonPlayer: PokemonsData | undefined;
 };
 
 const generateObstacle = (): ObstacleEntity => {
-  const height = Math.floor(Math.random() * (20 - 60) + 60);
+  const height = Math.random() * (20 - 60) + 60;
   const y = Math.random() * (0 - 50) + 50;
-  return { height, x: 100, y };
+  return { height, x: 100, y, id: ObstacleID++ };
 };
-
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
@@ -28,8 +29,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       if (randomValue > 100) return;
       const newObstacle = generateObstacle();
       setObstacles((obstacles) => [...obstacles, newObstacle]);
-    }, TICK * 80) as unknown as number;
-
+    }, TICK * 80);
     return () => {
       clearInterval(intervalId);
     };
@@ -42,31 +42,21 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     }
     const intervalId = setInterval(() => {
       setObstacles((obstacles) =>
-        obstacles.map((obstacle) => {
-          return { ...obstacle, x: obstacle.x - 1 };
-        })
+        obstacles.map((obstacle) => ({ ...obstacle, x: obstacle.x - 1 })).filter((obstacle) => obstacle.x !== 0)
       );
-    }, TICK) as unknown as number;
+    }, TICK / 2);
     return () => {
       clearInterval(intervalId);
     };
   }, [isGameSessionStarted]);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setObstacles((obstacles) => obstacles.filter((obstacle) => obstacle.x !== 0));
-    }, TICK) as unknown as number;
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
     obstacles.forEach((obstacle) => {
-      if (obstacle.x <= 9 && -playerCoord <= obstacle.height) {
-        setPlayerCoord(0);
-        setIsGameSessionStarted(false);
+      if (obstacle.x <= 11 && -playerCoord <= obstacle.height) {
+        setTimeout(() => {
+          setPlayerCoord(0);
+          setIsGameSessionStarted(false);
+        }, TICK);
       }
     });
   }, [obstacles, playerCoord]);
