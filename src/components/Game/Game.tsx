@@ -21,6 +21,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -57,35 +58,41 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           setPlayerCoord(0);
           setIsGameSessionStarted(false);
         }, TICK);
-      }
+      } else if (obstacle.x <= 11 && -playerCoord >= obstacle.height) setScore(obstacle.id);
     });
   }, [obstacles, playerCoord]);
 
   return (
-    <div className='game-wrapper'>
-      <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
-      <div className='game-block-container'>
-        <div className={isGameSessionStarted ? 'game-block animated' : 'game-block'}>
-          <div className='game-field'>
-            <Player
-              isGameStarted={isGameSessionStarted}
-              pokemonUrl={pokemonPlayer?.url}
-              playerCoord={playerCoord}
-              onChangePlayerCoord={setPlayerCoord}
-            />
-            {obstacles.map((obstacle, index) => (
-              <GameObstacle {...obstacle} key={index} />
-            ))}
+    <div className='main-game-wrapper'>
+      <div className='game-wrapper'>
+        <span className='game-logo'>RUN, {pokemonPlayer?.name}, RUN!!!</span>
+
+        <div className='game-block-container'>
+          <div className={isGameSessionStarted ? 'game-block animated' : 'game-block'}>
+            <div className='game-field'>
+              <Player
+                isGameStarted={isGameSessionStarted}
+                pokemonUrl={pokemonPlayer?.url}
+                playerCoord={playerCoord}
+                onChangePlayerCoord={setPlayerCoord}
+              />
+              {obstacles.map((obstacle, index) => (
+                <GameObstacle {...obstacle} key={index} />
+              ))}
+            </div>
           </div>
         </div>
-        {!isGameSessionStarted && (
-          <div className='btn-start-wrapper'>
-            <button className='btn-start' onClick={() => setIsGameSessionStarted(true)}>
-              Start
-            </button>
-          </div>
-        )}
       </div>
+      <div className='game-score'>
+        <span>{score}</span>
+      </div>
+      {!isGameSessionStarted && (
+        <div className='btn-start-wrapper'>
+          <button className='btn-start' onClick={() => setIsGameSessionStarted(true)}>
+            Start
+          </button>
+        </div>
+      )}
     </div>
   );
 };
