@@ -8,10 +8,17 @@ type Props = {
   pokemonUrl: string | undefined;
   playerCoord: number;
   isGameStarted: boolean;
+  isPaused: boolean;
   onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
 
-export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameStarted }: Props): JSX.Element => {
+export const Player = ({
+  pokemonUrl,
+  onChangePlayerCoord,
+  playerCoord,
+  isGameStarted,
+  isPaused,
+}: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
 
   useEffect(() => {
@@ -46,7 +53,9 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
             return;
           }
           const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(Math.floor(coord * -100));
+
+          if (isPaused) return;
+          else onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgress += step;
         };
         intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
@@ -94,7 +103,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
       if (intervalId) clearInterval(intervalId);
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord, isGameStarted]);
+  }, [onChangePlayerCoord, isGameStarted, isPaused]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert + 100}%`;

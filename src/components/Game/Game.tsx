@@ -22,6 +22,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -42,14 +43,17 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       return;
     }
     const intervalId = setInterval(() => {
+      if (paused) return;
+      const length = obstacles.length;
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => ({ ...obstacle, x: obstacle.x - 1 })).filter((obstacle) => obstacle.x !== 0)
       );
+      if (obstacles.length !== length) setScore((prevValue) => prevValue + 1);
     }, TICK / 2);
     return () => {
       clearInterval(intervalId);
     };
-  }, [isGameSessionStarted]);
+  }, [isGameSessionStarted, paused, obstacles]);
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
@@ -59,20 +63,21 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           setScore(0);
           setIsGameSessionStarted(false);
         }, TICK);
-      } else if (obstacle.x <= 11 && -playerCoord >= obstacle.height) setScore(obstacle.id);
+      }
     });
   }, [obstacles, playerCoord]);
 
   return (
     <div className='main-game-wrapper'>
+      <div className='btn-pause-wrapper'></div>
       <div className='game-wrapper'>
         <span className='game-logo'>RUN! {pokemonPlayer?.name}! RUN!</span>
-
         <div className='game-block-container'>
-          <div className={isGameSessionStarted ? 'game-block animated' : 'game-block'}>
+          <div className={isGameSessionStarted ? (!paused ? 'game-block animated' : 'game-block') : 'game-block'}>
             <div className='game-field'>
               <Player
                 isGameStarted={isGameSessionStarted}
+                isPaused={paused}
                 pokemonUrl={pokemonPlayer?.url}
                 playerCoord={playerCoord}
                 onChangePlayerCoord={setPlayerCoord}
@@ -82,11 +87,25 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
               ))}
             </div>
           </div>
+          {isGameSessionStarted && (
+            <div className='btn-pause-wrapper'>
+              <button
+                className='btn-pause'
+                onClick={() => {
+                  if (isGameSessionStarted) setPaused((prevValue) => !prevValue);
+                }}
+              >
+                PAUSE
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className='game-score'>
+        <span>SCORE</span>
         <span>{score}</span>
       </div>
+
       {!isGameSessionStarted && (
         <div className='btn-start-wrapper'>
           <button className='btn-start' onClick={() => setIsGameSessionStarted(true)}>
