@@ -44,11 +44,9 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     }
     const intervalId = setInterval(() => {
       if (paused) return;
-      const length = obstacles.length;
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => ({ ...obstacle, x: obstacle.x - 1 })).filter((obstacle) => obstacle.x !== 0)
       );
-      if (obstacles.length !== length) setScore((prevValue) => prevValue + 1);
     }, TICK / 2);
     return () => {
       clearInterval(intervalId);
@@ -66,7 +64,14 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       }
     });
   }, [obstacles, playerCoord]);
-
+  
+  useEffect(() => {
+    if(paused || !isGameSessionStarted) return;
+   const IntervalId= setInterval(() => {
+      setScore((prevValue) => prevValue + 1);
+    }, TICK * 20)
+   return () => {clearInterval(IntervalId)}
+  }, [paused, isGameSessionStarted]);
   return (
     <div className='main-game-wrapper'>
       <div className='btn-pause-wrapper'></div>
