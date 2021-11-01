@@ -1,3 +1,9 @@
+.main-game-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .game-wrapper {
   display: flex;
   justify-content: center;
@@ -13,6 +19,19 @@
   display: flex;
   justify-content: center;
 }
+.game-score {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 8vmin;
+  position: absolute;
+  width: 25%;
+  height: 45vmin;
+  top: 18vmin;
+  color: rgb(1, 11, 68);
+}
 .game-block-container {
   display: flex;
   justify-content: center;
@@ -27,11 +46,9 @@
 .game-block {
   width: 100%;
   height: 100%;
-
   background: url('./../../assets/game-background.png') repeat 0 / 100% auto;
   background-size: 100% 100%;
   animation-fill-mode: forwards;
-
   box-shadow: 100px;
   position: relative;
 }
@@ -43,6 +60,36 @@
   margin-top: 4vmin;
   width: 100%;
   height: 70%;
+}
+
+.btn-pause-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 8vmin;
+  position: absolute;
+  width: 25%;
+  height: 45vmin;
+  top: 75%;
+}
+.btn-pause {
+  width: 20vmin;
+  height: 7vmin;
+  border-radius: 1.5vmin;
+  font-size: 3vmin;
+  text-transform: uppercase;
+  transition: cubic-bezier(0.215, 0.61, 0.355, 1) all 1s;
+  font-size: 5vmin;
+  background-color: #ff1100;
+  border: 0.5vmin solid #000000;
+  color: #000000;
+  font-family: pixel-font;
+}
+.btn-pause:hover {
+  border: 0.5vmin solid #ffd000;
+  color: #ffd000;
 }
 
 @keyframes animatedBackground {

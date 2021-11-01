@@ -1,10 +1,10 @@
 .pokemon-logo {
   position: fixed;
   top: 35%;
-  margin-top: 50px;
+  margin-top: 6vmin;
 
   color: white;
-
+  letter-spacing: 0.5vmin;
   display: flex;
   justify-content: center;
   align-items: center;

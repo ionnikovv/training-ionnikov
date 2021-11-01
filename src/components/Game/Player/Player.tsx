@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TICK } from '../../../ConstantValues/ConstValues';
 import { isPokemonInfoResponse } from '../../../types/PokemonsData';
 import skate from './../../../assets/skate.png';
@@ -8,11 +8,20 @@ type Props = {
   pokemonUrl: string | undefined;
   playerCoord: number;
   isGameStarted: boolean;
+  isPaused: boolean;
   onChangePlayerCoord: (newPlayerCoord: number) => void;
 };
 
-export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameStarted }: Props): JSX.Element => {
+export const Player = ({
+  pokemonUrl,
+  onChangePlayerCoord,
+  playerCoord,
+  isGameStarted,
+  isPaused,
+}: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
+
+  const jumpProgressRef = useRef(0);
 
   useEffect(() => {
     async function getPokemonsInfo() {
@@ -29,25 +38,46 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
   useEffect(() => {
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
-    let jumpProgress = 0;
+    const handleIntervalKeyUp = () => {
+      if (jumpProgressRef.current > Math.PI && returnIntervalId !== null) {
+        jumpProgressRef.current = 0;
+        clearInterval(returnIntervalId);
+        intervalId = null;
+        returnIntervalId = null;
+        return;
+      }
+      if (jumpProgressRef.current < Math.PI / 2) {
+        const newProgress = Math.PI / 2 - jumpProgressRef.current;
+        jumpProgressRef.current += newProgress * 2;
+      }
+      const coord = Math.abs(Math.sin(jumpProgressRef.current));
+      onChangePlayerCoord(Math.floor(coord * -100));
+      jumpProgressRef.current += step;
+    };
+
     const step = Math.PI / 60;
+    if (isPaused) return;
+
+    if (!isPaused && jumpProgressRef.current > 0)
+      returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
 
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
 
       if (!intervalId) {
         const handleIntervalKeydown = () => {
-          if (jumpProgress > Math.PI && intervalId !== null) {
+          if (jumpProgressRef.current > Math.PI && intervalId !== null) {
             clearInterval(intervalId);
             intervalId = null;
-            jumpProgress = 0;
+            jumpProgressRef.current = 0;
             if (returnIntervalId) clearInterval(returnIntervalId);
             returnIntervalId = null;
             return;
           }
-          const coord = Math.abs(Math.sin(jumpProgress));
+          const coord = Math.abs(Math.sin(jumpProgressRef.current));
+
           onChangePlayerCoord(Math.floor(coord * -100));
-          jumpProgress += step;
+          jumpProgressRef.current += step;
         };
         intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
         handleIntervalKeydown();
@@ -57,24 +87,6 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
     const handleKeyUp = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
-        const handleIntervalKeyUp = () => {
-          if (!intervalId) return;
-          clearInterval(intervalId);
-          if (jumpProgress > Math.PI && returnIntervalId !== null) {
-            jumpProgress = 0;
-            clearInterval(returnIntervalId);
-            intervalId = null;
-            returnIntervalId = null;
-            return;
-          }
-          if (jumpProgress < Math.PI / 2) {
-            const newProgress = Math.PI / 2 - jumpProgress;
-            jumpProgress += newProgress * 2;
-          }
-          const coord = Math.abs(Math.sin(jumpProgress));
-          onChangePlayerCoord(Math.floor(coord * -100));
-          jumpProgress += step;
-        };
         returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
         handleIntervalKeyUp();
         if (intervalId) clearInterval(intervalId);
@@ -94,7 +106,7 @@ export const Player = ({ pokemonUrl, onChangePlayerCoord, playerCoord, isGameSta
       if (intervalId) clearInterval(intervalId);
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord, isGameStarted]);
+  }, [onChangePlayerCoord, isGameStarted, isPaused]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert + 100}%`;
