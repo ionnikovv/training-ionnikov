@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import Webcam from 'react-webcam';
 import { TICK } from '../../ConstantValues/ConstValues';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
 import './Game.css';
 import { GameObstacle } from './Obstacle/GameObstacle';
+
 import { Player } from './Player/Player';
-// import * as tf from '@tensorflow/tfjs';
-// import * as posenet from '@tensorflow-models/posenet';
-import Webcam from 'react-webcam';
+import * as posenet from '@tensorflow-models/posenet';
+import { PosenetInput } from '@tensorflow-models/posenet/dist/types';
+
 let ObstacleID = 1;
 
 type Props = {
@@ -25,8 +27,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
-  const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -112,8 +112,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           )}
         </div>
         <div className='webcam-wrapper'>
-          <Webcam ref={webcamRef} className='webcam' />
-          <canvas ref={canvasRef} className='canvas' />
+          <video className='webcam' />
         </div>
       </div>
 
