@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import Webcam from 'react-webcam';
+import { useEffect, useState } from 'react';
 import { TICK } from '../../ConstantValues/ConstValues';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
+import { Camera } from '../CameraComponent/Camera';
 import './Game.css';
 import { GameObstacle } from './Obstacle/GameObstacle';
 
 import { Player } from './Player/Player';
-import * as posenet from '@tensorflow-models/posenet';
-import { PosenetInput } from '@tensorflow-models/posenet/dist/types';
 
 let ObstacleID = 1;
 
@@ -112,7 +110,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           )}
         </div>
         <div className='webcam-wrapper'>
-          <video className='webcam' />
+          <Camera />
         </div>
       </div>
 

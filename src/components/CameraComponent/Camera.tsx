@@ -1,23 +1,38 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from 'react';
+// import * as posenet from '@tensorflow-models/posenet';
+import './Camera.css';
 
+export const Camera = (): JSX.Element => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
-// export const Camera = () => JSX.Element {
+  // navigator.mediaDevices
+  //   .getUserMedia({ video: true, audio: false })
+  //   .then(function (stream) {
+  //     video.srcObject = stream;
+  //     video.play();
+  //   })
+  //   .catch(function (err) {
+  //     console.log('An error occurred: ' + err);
+  //   });
 
-// }
-
-/* const imageScaleFactor = 0.5;
-  const outputStride = 16;
-  const flipHorizontal = false;
-
- async function estimatePoseOnImage(imageElement: PosenetInput | HTMLImageElement) {
-  const net = await posenet.load();
-
-  const poses = await net.estimatePoses(imageElement, {
-    flipHorizontal: true,
-    decodingMethod: 'single-person'
-  });
-  const pose = poses[0]
-  return pose;
-}
-  const imageElement = document.getElementsByClassName('webcam');
-  console.log(estimatePoseOnImage(imageElement));*/
+  useEffect(() => {
+    const webcamera = videoRef.current;
+    if (!webcamera) return;
+    webcamera.srcObject = videoStream;
+    webcamera.play();
+  }, [videoRef, videoStream]);
+  useEffect(() => {
+    const playVideo = async () => {
+      setVideoStream(await navigator.mediaDevices.getUserMedia({ video: true }));
+      if (!videoRef) return;
+    };
+  }, [videoRef, videoStream]);
+  return (
+    <div className='webcamera-wrapper'>
+      <video ref={videoRef} width={1200} height={1000} className={'webcamera'}>
+        it is doen`t works
+      </video>
+    </div>
+  );
+};
