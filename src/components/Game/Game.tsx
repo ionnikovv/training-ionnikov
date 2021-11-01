@@ -38,12 +38,12 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   }, [isGameSessionStarted]);
 
   useEffect(() => {
+    if (paused) return;
     if (!isGameSessionStarted) {
       setObstacles([]);
       return;
     }
     const intervalId = setInterval(() => {
-      if (paused) return;
       setObstacles((obstacles) =>
         obstacles.map((obstacle) => ({ ...obstacle, x: obstacle.x - 1 })).filter((obstacle) => obstacle.x !== 0)
       );
@@ -64,13 +64,15 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       }
     });
   }, [obstacles, playerCoord]);
-  
+
   useEffect(() => {
-    if(paused || !isGameSessionStarted) return;
-   const IntervalId= setInterval(() => {
+    if (paused || !isGameSessionStarted) return;
+    const IntervalId = setInterval(() => {
       setScore((prevValue) => prevValue + 1);
-    }, TICK * 20)
-   return () => {clearInterval(IntervalId)}
+    }, TICK * 20);
+    return () => {
+      clearInterval(IntervalId);
+    };
   }, [paused, isGameSessionStarted]);
   return (
     <div className='main-game-wrapper'>

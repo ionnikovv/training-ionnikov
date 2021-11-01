@@ -38,12 +38,32 @@ export const Player = ({
   useEffect(() => {
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
-    jumpProgressRef.current = 0;
+    // jumpProgressRef.current = 0;
+    const handleIntervalKeyUp = () => {
+      // if (!intervalId) return;
+      // clearInterval(intervalId);
+      if (jumpProgressRef.current > Math.PI && returnIntervalId !== null) {
+        jumpProgressRef.current = 0;
+        clearInterval(returnIntervalId);
+        intervalId = null;
+        returnIntervalId = null;
+        return;
+      }
+      if (jumpProgressRef.current < Math.PI / 2) {
+        const newProgress = Math.PI / 2 - jumpProgressRef.current;
+        jumpProgressRef.current += newProgress * 2;
+      }
+      const coord = Math.abs(Math.sin(jumpProgressRef.current));
+      onChangePlayerCoord(Math.floor(coord * -100));
+      jumpProgressRef.current += step;
+    };
+
     const step = Math.PI / 60;
-    if (isPaused) {
-      onChangePlayerCoord(0);
-      return;
-    }
+    if (isPaused) return;
+
+    if (!isPaused && jumpProgressRef.current > 0)
+      returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
+
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
 
@@ -70,24 +90,6 @@ export const Player = ({
     const handleKeyUp = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
-        const handleIntervalKeyUp = () => {
-          if (!intervalId) return;
-          clearInterval(intervalId);
-          if (jumpProgressRef.current > Math.PI && returnIntervalId !== null) {
-            jumpProgressRef.current = 0;
-            clearInterval(returnIntervalId);
-            intervalId = null;
-            returnIntervalId = null;
-            return;
-          }
-          if (jumpProgressRef.current < Math.PI / 2) {
-            const newProgress = Math.PI / 2 - jumpProgressRef.current;
-            jumpProgressRef.current += newProgress * 2;
-          }
-          const coord = Math.abs(Math.sin(jumpProgressRef.current));
-          onChangePlayerCoord(Math.floor(coord * -100));
-          jumpProgressRef.current += step;
-        };
         returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
         handleIntervalKeyUp();
         if (intervalId) clearInterval(intervalId);
