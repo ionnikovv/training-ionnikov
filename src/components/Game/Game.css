@@ -92,6 +92,28 @@
   color: #ffd000;
 }
 
+.webcam-wrapper {
+  position: relative;
+  width: 27vmin;
+  height: 20vmin;
+  color: inherit;
+  margin: auto;
+}
+.webcam {
+  position: absolute;
+  width: 100%;
+  box-shadow: 0 2vmin 8vmin rgb(1, 11, 68);
+  z-index: 9;
+  height: 100%;
+}
+.canvas {
+  background-color: #ff110062;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  height: 100%;
+}
+
 @keyframes animatedBackground {
   from {
     background-position: 0 0;
