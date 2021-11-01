@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TICK } from '../../../ConstantValues/ConstValues';
 import { isPokemonInfoResponse } from '../../../types/PokemonsData';
 import skate from './../../../assets/skate.png';
@@ -21,6 +21,8 @@ export const Player = ({
 }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
 
+  const jumpProgressRef = useRef(0);
+
   useEffect(() => {
     async function getPokemonsInfo() {
       if (!pokemonUrl) return;
@@ -36,27 +38,29 @@ export const Player = ({
   useEffect(() => {
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
-    let jumpProgress = 0;
+    jumpProgressRef.current = 0;
     const step = Math.PI / 60;
-
+    if (isPaused) {
+      onChangePlayerCoord(0);
+      return;
+    }
     const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
 
       if (!intervalId) {
         const handleIntervalKeydown = () => {
-          if (jumpProgress > Math.PI && intervalId !== null) {
+          if (jumpProgressRef.current > Math.PI && intervalId !== null) {
             clearInterval(intervalId);
             intervalId = null;
-            jumpProgress = 0;
+            jumpProgressRef.current = 0;
             if (returnIntervalId) clearInterval(returnIntervalId);
             returnIntervalId = null;
             return;
           }
-          const coord = Math.abs(Math.sin(jumpProgress));
+          const coord = Math.abs(Math.sin(jumpProgressRef.current));
 
-          if (isPaused) return;
-          else onChangePlayerCoord(Math.floor(coord * -100));
-          jumpProgress += step;
+          onChangePlayerCoord(Math.floor(coord * -100));
+          jumpProgressRef.current += step;
         };
         intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
         handleIntervalKeydown();
@@ -69,20 +73,20 @@ export const Player = ({
         const handleIntervalKeyUp = () => {
           if (!intervalId) return;
           clearInterval(intervalId);
-          if (jumpProgress > Math.PI && returnIntervalId !== null) {
-            jumpProgress = 0;
+          if (jumpProgressRef.current > Math.PI && returnIntervalId !== null) {
+            jumpProgressRef.current = 0;
             clearInterval(returnIntervalId);
             intervalId = null;
             returnIntervalId = null;
             return;
           }
-          if (jumpProgress < Math.PI / 2) {
-            const newProgress = Math.PI / 2 - jumpProgress;
-            jumpProgress += newProgress * 2;
+          if (jumpProgressRef.current < Math.PI / 2) {
+            const newProgress = Math.PI / 2 - jumpProgressRef.current;
+            jumpProgressRef.current += newProgress * 2;
           }
-          const coord = Math.abs(Math.sin(jumpProgress));
+          const coord = Math.abs(Math.sin(jumpProgressRef.current));
           onChangePlayerCoord(Math.floor(coord * -100));
-          jumpProgress += step;
+          jumpProgressRef.current += step;
         };
         returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
         handleIntervalKeyUp();
