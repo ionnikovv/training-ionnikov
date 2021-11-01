@@ -6,9 +6,22 @@ export const Camera = (): JSX.Element => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
+  const [isCameraEnabled, setIsCameraEnabled] = useState(true);
+  // const runPosenet = async () => {
+  //   const posenet_model = await posenet.load({
+  //     inputResolution: { width: 640, height: 480 },
+  //     scale: 0.8,
+  //   });
+  //   //
+  //   setInterval(() => {
+  //     detectWebcamFeed(posenet_model);
+  //   }, 100);
+  // };
+
   useEffect(() => {
     const webcamera = videoRef.current;
     if (!webcamera) return;
+
     webcamera.srcObject = videoStream;
     webcamera.play();
   }, [videoRef, videoStream]);
@@ -17,12 +30,21 @@ export const Camera = (): JSX.Element => {
     const playVideo = async () => {
       setVideoStream(await navigator.mediaDevices.getUserMedia({ video: true }));
     };
-    playVideo();
-  }, []);
+    if (isCameraEnabled) playVideo();
+  }, [isCameraEnabled]);
 
+  useEffect(() => {
+    if (!isCameraEnabled && videoStream) {
+      videoStream.getTracks().forEach((track) => track.stop());
+    }
+  }, [isCameraEnabled, videoStream]);
   return (
     <div className='webcamera-wrapper'>
-      <video ref={videoRef} width={1200} height={1000} className={'webcamera'} />
+      {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
+      <div className='checkbox-wrapper'>
+        <input type='checkbox' onChange={() => setIsCameraEnabled(!isCameraEnabled)} checked={isCameraEnabled} />
+        {isCameraEnabled ? 'Camera ON' : 'Camera OFF'}
+      </div>
     </div>
   );
 };

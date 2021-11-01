@@ -5,10 +5,26 @@
   width: 35vmin;
   height: 35vmin;
   color: inherit;
+
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  flex-direction: column;
 }
 .webcamera {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
   z-index: 9;
+}
+.webcamera .disabled {
+  display: none;
+}
+.checkbox-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  word-spacing: 1vmin;
+  width: 100%;
+  font-size: 2.5vmin;
 }

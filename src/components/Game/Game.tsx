@@ -25,7 +25,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
@@ -76,6 +75,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       clearInterval(IntervalId);
     };
   }, [paused, isGameSessionStarted]);
+
   return (
     <div className='main-game-wrapper'>
       <div className='btn-pause-wrapper'></div>
@@ -109,6 +109,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
             </div>
           )}
         </div>
+
         <div className='webcam-wrapper'>
           <Camera />
         </div>
