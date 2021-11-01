@@ -38,10 +38,7 @@ export const Player = ({
   useEffect(() => {
     let intervalId: number | null = null;
     let returnIntervalId: number | null = null;
-    // jumpProgressRef.current = 0;
     const handleIntervalKeyUp = () => {
-      // if (!intervalId) return;
-      // clearInterval(intervalId);
       if (jumpProgressRef.current > Math.PI && returnIntervalId !== null) {
         jumpProgressRef.current = 0;
         clearInterval(returnIntervalId);

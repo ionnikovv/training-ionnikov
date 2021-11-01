@@ -51,7 +51,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [isGameSessionStarted, paused, obstacles]);
+  }, [isGameSessionStarted, paused]);
 
   useEffect(() => {
     obstacles.forEach((obstacle) => {
@@ -112,7 +112,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         <span>SCORE</span>
         <span>{score}</span>
       </div>
-
       {!isGameSessionStarted && (
         <div className='btn-start-wrapper'>
           <button className='btn-start' onClick={() => setIsGameSessionStarted(true)}>
