@@ -62,7 +62,6 @@ export const Camera = (): JSX.Element => {
         try {
           const poses = await detector?.estimatePoses(video, estimationConfig);
           if (!poses) return;
-          console.log('poses Y', poses[0].keypoints[0].y);
         } catch (e) {
           console.log(e);
         }
