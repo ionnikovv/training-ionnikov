@@ -20,7 +20,7 @@ export const Player = ({
   isPaused,
 }: Props): JSX.Element => {
   const [pokemonImage, setPokemonImage] = useState('');
-
+  const webCameraElement = document.getElementById('webcamera');
   const jumpProgressRef = useRef(0);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export const Player = ({
     if (!isPaused && jumpProgressRef.current > 0)
       returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
 
-    const handleKeydown = (event: KeyboardEvent | TouchEvent) => {
+    const handleKeydown = (event: KeyboardEvent | TouchEvent | Event) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
 
       if (!intervalId) {
@@ -84,7 +84,7 @@ export const Player = ({
       }
     };
 
-    const handleKeyUp = (event: KeyboardEvent | TouchEvent) => {
+    const handleKeyUp = (event: KeyboardEvent | TouchEvent | Event) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
         returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
@@ -96,17 +96,21 @@ export const Player = ({
       document.addEventListener('keydown', handleKeydown);
       document.addEventListener('keyup', handleKeyUp);
       document.addEventListener('touchstart', handleKeydown, false);
-      document.addEventListener('touchend', handleKeyUp, false);
+
+      webCameraElement?.addEventListener('setDownAi', handleKeyUp);
+      webCameraElement?.addEventListener('setUpAI', handleKeydown);
     }
     return () => {
       document.removeEventListener('keydown', handleKeydown);
       document.removeEventListener('keyup', handleKeyUp);
       document.removeEventListener('touchstart', handleKeydown, false);
       document.removeEventListener('touchend', handleKeyUp, false);
+      webCameraElement?.removeEventListener('setDownAi', handleKeyUp);
+      webCameraElement?.removeEventListener('setUpAI', handleKeydown);
       if (intervalId) clearInterval(intervalId);
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord, isGameStarted, isPaused]);
+  }, [onChangePlayerCoord, isGameStarted, isPaused, webCameraElement]);
 
   const convertToCssUnits = (valueToConvert: number): string | undefined => {
     return `${valueToConvert + 100}%`;

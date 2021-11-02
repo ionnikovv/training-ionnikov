@@ -11,12 +11,12 @@
   align-self: center;
   flex-direction: column;
 }
-.webcamera {
+#webcamera {
   width: 40vmin;
   height: 40vmin;
   z-index: 9;
 }
-.webcamera .disabled {
+#webcamera .disabled {
   display: none;
 }
 .checkbox-wrapper {

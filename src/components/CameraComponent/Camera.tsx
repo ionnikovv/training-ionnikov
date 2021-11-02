@@ -4,6 +4,11 @@ import '@tensorflow/tfjs-backend-webgl';
 import './Camera.css';
 import { TICK } from '../../ConstantValues/ConstValues';
 
+type Props = {
+  onPlayerCoordChange: (newPlayerCoord: number) => void;
+  isPaused: boolean;
+};
+
 const DETECTED_CONFIG = {
   modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
   enableTracking: true,
@@ -22,7 +27,7 @@ const VIDEO_CONFIG = {
 
 const estimationConfig = { flipHorizontal: true };
 
-export const Camera = (): JSX.Element => {
+export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
@@ -32,10 +37,15 @@ export const Camera = (): JSX.Element => {
   const initialiseVideoPlaying = async () => {
     setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
   };
-
+  const onNormalizeCoords = (value: number) => {
+    const result = Math.floor(-value * -0.3 - 100);
+    if (result > 0) return 0;
+    return result;
+  };
   useEffect(() => {
     const webcamera = videoRef.current;
     if (!webcamera || !videoStream) return;
+
     webcamera.srcObject = videoStream;
     let playPromise: Promise<void> | null | void = null;
     if (isCameraEnabled) playPromise = webcamera.play();
@@ -51,7 +61,7 @@ export const Camera = (): JSX.Element => {
     return () => {
       playPromise = null;
     };
-  }, [videoRef, videoStream, isCameraEnabled]);
+  }, [videoRef, videoStream, isCameraEnabled, isPaused]);
 
   useEffect(() => {
     if (!isReadyForDetection) return;
@@ -62,6 +72,7 @@ export const Camera = (): JSX.Element => {
         try {
           const poses = await detector?.estimatePoses(video, estimationConfig);
           if (!poses) return;
+          onPlayerCoordChange(onNormalizeCoords(poses[0].keypoints[6].y));
         } catch (e) {
           console.log(e);
         }
@@ -70,7 +81,7 @@ export const Camera = (): JSX.Element => {
     }, TICK * 2);
 
     return () => clearInterval(IntervalId);
-  }, [detector, isReadyForDetection]);
+  }, [detector, isReadyForDetection, onPlayerCoordChange]);
 
   useEffect(() => {
     if (isCameraEnabled) initialiseVideoPlaying();
@@ -89,7 +100,7 @@ export const Camera = (): JSX.Element => {
 
   return (
     <div className='webcamera-wrapper'>
-      {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
+      {isCameraEnabled && <video ref={videoRef} id={'webcamera'} />}
       <div className='checkbox-wrapper'>
         <input
           type='checkbox'

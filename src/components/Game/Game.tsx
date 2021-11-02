@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TICK } from '../../ConstantValues/ConstValues';
+import { setDownAI, TICK } from '../../ConstantValues/ConstValues';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
 import { Camera } from '../CameraComponent/Camera';
@@ -21,10 +21,18 @@ const generateObstacle = (): ObstacleEntity => {
 };
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
+
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (playerCoord <= -60) {
+      document.dispatchEvent(setDownAI);
+    }
+  }, [playerCoord]);
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
@@ -111,7 +119,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         </div>
 
         <div className='webcam-wrapper'>
-          <Camera  />
+          <Camera isPaused={paused} onPlayerCoordChange={setPlayerCoord} />
         </div>
       </div>
 
