@@ -91,7 +91,12 @@ export const Camera = (): JSX.Element => {
     <div className='webcamera-wrapper'>
       {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
       <div className='checkbox-wrapper'>
-        <input type='checkbox' onChange={() => setIsCameraEnabled(!isCameraEnabled)} checked={isCameraEnabled} />
+        <input
+          type='checkbox'
+          onChange={() => setIsCameraEnabled(!isCameraEnabled)}
+          checked={isCameraEnabled}
+          className='checkboxOnOff'
+        />
         {isCameraEnabled ? 'Camera ON' : 'Camera OFF'}
       </div>
     </div>
