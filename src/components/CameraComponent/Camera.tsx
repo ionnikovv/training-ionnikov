@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import * as posenet from '@tensorflow-models/posenet';
 import * as poseDetection from '@tensorflow-models/pose-detection';
-import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import './Camera.css';
 import { TICK } from '../../ConstantValues/ConstValues';
-
-const MODEL = poseDetection.SupportedModels.BlazePose;
 
 const DETECTED_CONFIG = {
   modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
@@ -66,6 +62,7 @@ export const Camera = (): JSX.Element => {
         try {
           const poses = await detector?.estimatePoses(video, estimationConfig);
           if (!poses) return;
+          console.log('poses Y', poses[0].keypoints[0].y);
         } catch (e) {
           console.log(e);
         }
