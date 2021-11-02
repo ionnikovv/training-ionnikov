@@ -111,7 +111,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         </div>
 
         <div className='webcam-wrapper'>
-          <Camera />
+          <Camera  />
         </div>
       </div>
 
