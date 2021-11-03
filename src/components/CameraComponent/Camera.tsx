@@ -34,9 +34,6 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
   const [detector, setDetector] = useState<poseDetection.PoseDetector | null>(null);
   const [isReadyForDetection, setIsReadyForDetection] = useState(false);
 
-  const initialiseVideoPlaying = async () => {
-    setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
-  };
   const onNormalizeCoords = (value: number) => {
     const result = Math.floor(-value * -0.3 - 100);
     if (result > 0) return 0;
@@ -50,13 +47,11 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
     let playPromise: Promise<void> | null | void = null;
     if (isCameraEnabled) playPromise = webcamera.play();
     if (playPromise) {
-      playPromise
-        ?.then(() => {
-          setIsReadyForDetection(true);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      try {
+        setIsReadyForDetection(true);
+      } catch (e) {
+        console.log(e);
+      }
     }
     return () => {
       playPromise = null;
@@ -84,11 +79,16 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
   }, [detector, isReadyForDetection, onPlayerCoordChange]);
 
   useEffect(() => {
+    const initialiseVideoPlaying = async () => {
+      setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
+    };
     if (isCameraEnabled) initialiseVideoPlaying();
   }, [isCameraEnabled]);
 
   useEffect(() => {
-    if (!isCameraEnabled && videoStream) videoStream.getTracks().forEach((track) => track.stop());
+    return () => {
+      if (!isCameraEnabled || videoStream) videoStream?.getTracks().forEach((track) => track.stop());
+    };
   }, [isCameraEnabled, videoStream]);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
 
   return (
     <div className='webcamera-wrapper'>
-      {isCameraEnabled && <video ref={videoRef} id={'webcamera'} />}
+      {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
       <div className='checkbox-wrapper'>
         <input
           type='checkbox'

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { setDownAI, TICK } from '../../ConstantValues/ConstValues';
+import { TICK } from '../../ConstantValues/ConstValues';
+import { useJump } from '../../Hooks/useJumpOnKeyboard';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
 import { Camera } from '../CameraComponent/Camera';
@@ -19,20 +20,20 @@ const generateObstacle = (): ObstacleEntity => {
   const y = Math.random() * (0 - 50) + 50;
   return { height, x: 100, y, id: ObstacleID++ };
 };
+
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    if (playerCoord <= -60) {
-      document.dispatchEvent(setDownAI);
-    }
-  }, [playerCoord]);
-
+  const { handleBack, handleJump } =
+    useJump({
+      onChangePlayerCoord: setPlayerCoord,
+      isPaused: paused,
+      isGameStarted: isGameSessionStarted,
+    }) ?? {};
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
@@ -45,6 +46,31 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       clearInterval(intervalId);
     };
   }, [isGameSessionStarted]);
+
+  // let intervalId: number | null = null;
+  // let returnIntervalId: number | null = null;
+
+  useEffect(() => {
+    let intervalId: number | null = null;
+    let returnIntervalId: number | null = null;
+
+    if (!handleJump || !handleBack) return;
+
+    intervalId = setInterval(() => {
+      document.addEventListener('keydown', handleJump);
+    }, TICK) as unknown as null;
+    // if (intervalId) clearInterval(intervalId);
+
+    returnIntervalId = setInterval(() => {
+      document.addEventListener('keyup', handleBack);
+    }, TICK) as unknown as null;
+    return () => {
+      if (returnIntervalId) clearInterval(returnIntervalId);
+      document.removeEventListener('keyup', handleBack);
+      if (intervalId) clearInterval(intervalId);
+      document.removeEventListener('keydown', handleJump);
+    };
+  }, [handleJump, handleBack]);
 
   useEffect(() => {
     if (paused) return;
@@ -86,19 +112,12 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
   return (
     <div className='main-game-wrapper'>
-      <div className='btn-pause-wrapper'></div>
       <div className='game-wrapper'>
         <span className='game-logo'>RUN! {pokemonPlayer?.name}! RUN!</span>
         <div className='game-block-container'>
           <div className={isGameSessionStarted ? (!paused ? 'game-block animated' : 'game-block') : 'game-block'}>
             <div className='game-field'>
-              <Player
-                isGameStarted={isGameSessionStarted}
-                isPaused={paused}
-                pokemonUrl={pokemonPlayer?.url}
-                playerCoord={playerCoord}
-                onChangePlayerCoord={setPlayerCoord}
-              />
+              <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} />
               {obstacles.map((obstacle, index) => (
                 <GameObstacle {...obstacle} key={index} />
               ))}
