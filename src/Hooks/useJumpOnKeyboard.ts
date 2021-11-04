@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { TICK } from '../ConstantValues/ConstValues';
 
 type Props = {
-  isGameStarted: boolean;
   isPaused: boolean;
   onChangePlayerCoord: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -10,7 +9,6 @@ type Props = {
 export const useJumpKeyboad = ({
   onChangePlayerCoord,
   isPaused,
-  isGameStarted,
 }: Props): null | Record<'handleJump' | 'handleBack', () => void> => {
   const jumpProgressRef = useRef(0);
   const [callbacks, setCallbacks] = useState<null | Record<'handleJump' | 'handleBack', () => void>>(null);
@@ -21,7 +19,7 @@ export const useJumpKeyboad = ({
     const step = Math.PI / 60;
     if (isPaused) return;
 
-    const handleJump = (event?: TouchEvent | null | KeyboardEvent) => {
+    const handleJump = (event?: (TouchEvent | KeyboardEvent) | null) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
         returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
@@ -49,7 +47,7 @@ export const useJumpKeyboad = ({
     if (!isPaused && jumpProgressRef.current > 0)
       returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
 
-    const handleBack = (event?: TouchEvent | null | KeyboardEvent) => {
+    const handleBack = (event?: (TouchEvent | KeyboardEvent) | null) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!intervalId) {
         const handleIntervalBack = () => {
@@ -75,6 +73,6 @@ export const useJumpKeyboad = ({
       if (intervalId) clearInterval(intervalId);
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
-  }, [onChangePlayerCoord, isGameStarted, isPaused]);
+  }, [onChangePlayerCoord, isPaused]);
   return callbacks;
 };

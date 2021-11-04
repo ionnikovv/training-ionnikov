@@ -32,7 +32,6 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     useJumpKeyboad({
       onChangePlayerCoord: setPlayerCoord,
       isPaused: paused,
-      isGameStarted: isGameSessionStarted,
     }) ?? {};
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -55,10 +54,12 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
 
     intervalId = setInterval(() => {
       document.addEventListener('keyup', handleJump);
+      document.addEventListener('touchend', handleJump);
     }, TICK) as unknown as null;
 
     returnIntervalId = setInterval(() => {
       document.addEventListener('keydown', handleBack);
+      document.addEventListener('touchstart', handleBack);
     }, TICK) as unknown as null;
 
     return () => {
@@ -67,6 +68,8 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       returnIntervalId = null;
       intervalId = null;
       document.removeEventListener('keydown', handleBack);
+      document.removeEventListener('touchstart', handleJump);
+      document.removeEventListener('touchend', handleJump);
       document.removeEventListener('keyup', handleJump);
     };
   }, [handleJump, handleBack, paused, isGameSessionStarted]);
