@@ -24,12 +24,12 @@ export const useJump = ({
     const handleJump = (event?: TouchEvent | Event | null | KeyboardEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
-        returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
-        handleIntervalKeyUp();
+        returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
+        handleIntervalJump();
         if (intervalId) clearInterval(intervalId);
       }
     };
-    const handleIntervalKeyUp = () => {
+    const handleIntervalJump = () => {
       if (jumpProgressRef.current > Math.PI && returnIntervalId !== null) {
         jumpProgressRef.current = 0;
         clearInterval(returnIntervalId);
@@ -47,12 +47,12 @@ export const useJump = ({
     };
 
     if (!isPaused && jumpProgressRef.current > 0)
-      returnIntervalId = setInterval(handleIntervalKeyUp, TICK) as unknown as number;
+      returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
 
     const handleBack = (event?: TouchEvent | Event | null | KeyboardEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!intervalId) {
-        const handleIntervalKeydown = () => {
+        const handleIntervalBack = () => {
           if (jumpProgressRef.current > Math.PI && intervalId !== null) {
             clearInterval(intervalId);
             intervalId = null;
@@ -66,8 +66,8 @@ export const useJump = ({
           onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgressRef.current += step;
         };
-        intervalId = setInterval(handleIntervalKeydown, TICK) as unknown as number;
-        handleIntervalKeydown();
+        intervalId = setInterval(handleIntervalBack, TICK) as unknown as number;
+        handleIntervalBack();
       }
     };
     setCallbacks({ handleJump, handleBack });

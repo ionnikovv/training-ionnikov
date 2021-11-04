@@ -47,30 +47,37 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     };
   }, [isGameSessionStarted]);
 
-  // let intervalId: number | null = null;
-  // let returnIntervalId: number | null = null;
-
   useEffect(() => {
     let intervalId: number | null = null;
-    let returnIntervalId: number | null = null;
-
-    if (!handleJump || !handleBack) return;
-
+    if (!handleJump) return;
     intervalId = setInterval(() => {
-      document.addEventListener('keydown', handleJump);
+      document.addEventListener('keyup', handleJump);
     }, TICK) as unknown as null;
     // if (intervalId) clearInterval(intervalId);
 
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      intervalId = null;
+      document.removeEventListener('keyup', handleJump);
+    };
+  }, [handleJump]);
+
+  useEffect(() => {
+    let returnIntervalId: number | null = null;
+
+    if (!handleBack) return;
     returnIntervalId = setInterval(() => {
-      document.addEventListener('keyup', handleBack);
+      document.addEventListener('keydown', handleBack);
     }, TICK) as unknown as null;
+
+    // if (returnIntervalId) clearInterval(returnIntervalId);
+
     return () => {
       if (returnIntervalId) clearInterval(returnIntervalId);
-      document.removeEventListener('keyup', handleBack);
-      if (intervalId) clearInterval(intervalId);
-      document.removeEventListener('keydown', handleJump);
+      returnIntervalId = null;
+      document.removeEventListener('keydown', handleBack);
     };
-  }, [handleJump, handleBack]);
+  }, [handleBack]);
 
   useEffect(() => {
     if (paused) return;

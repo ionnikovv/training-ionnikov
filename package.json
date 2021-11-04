@@ -48,5 +48,8 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.4.1"
   },
-  "homepage": "https://ionnikovv.github.io/training-ionnikov/"
+  "homepage": "https://ionnikovv.github.io/training-ionnikov/",
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
 }
