@@ -72,5 +72,6 @@ export const useJump = ({ onChangePlayerCoord, isPaused }: Props): jumpCallbacks
       if (returnIntervalId) clearInterval(returnIntervalId);
     };
   }, [onChangePlayerCoord, isPaused]);
+
   return callbacks;
 };

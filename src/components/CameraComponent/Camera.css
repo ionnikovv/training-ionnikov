@@ -1,4 +1,4 @@
-.webcamera-wrapper {
+.webcam-wrapper {
   left: 79%;
   top: 25%;
   position: fixed;
@@ -12,6 +12,7 @@
   flex-direction: column;
   box-shadow: 0 2vmin 8vmin rgb(1, 11, 68);
 }
-.webcamera-wrapper .disabled {
+
+.webcam-wrapper.disabled {
   box-shadow: none;
 }

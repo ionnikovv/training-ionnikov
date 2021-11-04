@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import '@tensorflow/tfjs-backend-webgl';
 import './Camera.css';
@@ -29,7 +29,7 @@ const VIDEO_CONFIG = {
 const estimationConfig = { flipHorizontal: true };
 
 export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): JSX.Element => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [video, setVideoElement] = useState<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
   const [detector, setDetector] = useState<poseDetection.PoseDetector | null>(null);
@@ -40,67 +40,84 @@ export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): J
     if (result > 0) return 0;
     return result;
   };
-  useEffect(() => {
-    const webcamera = videoRef.current;
-    if (!webcamera || !videoStream) return;
 
-    webcamera.srcObject = videoStream;
-    let playPromise: Promise<void> | null | void = null;
-    if (isCameraEnabled) playPromise = webcamera.play();
-    if (playPromise) {
+  useEffect(() => {
+    if (!video || !videoStream) return;
+
+    video.srcObject = videoStream;
+
+    setIsReadyForDetection(false);
+    video.onplay = () => setIsReadyForDetection(true);
+
+    return () => {
+      video.srcObject = null;
+    };
+  }, [videoStream, video, isPaused]);
+
+  useEffect(() => {
+    if (!isReadyForDetection || !video || !detector) return;
+
+    let isDetecting = false;
+
+    const getPosesForCoords = async () => {
+      if (isDetecting) return;
+
+      isDetecting = true;
       try {
-        setIsReadyForDetection(true);
+        const poses = await detector.estimatePoses(video, estimationConfig);
+        const shoulder = poses[0]?.keypoints[6];
+        if (shoulder) onAiValueChange(onNormalizeCoords(shoulder.y));
       } catch (e) {
         console.log(e);
+      } finally {
+        isDetecting = false;
       }
-    }
-    return () => {
-      playPromise = null;
     };
-  }, [videoRef, videoStream, isCameraEnabled, isPaused]);
 
-  useEffect(() => {
-    if (!isReadyForDetection) return;
-    const webcamera = videoRef.current;
-
-    const IntervalId = setInterval(() => {
-      const getPosesForCoords = async (video: HTMLVideoElement): Promise<void> => {
-        try {
-          const poses = await detector?.estimatePoses(video, estimationConfig);
-          if (!poses) return;
-          if (poses[0].keypoints[6].y !== undefined) onAiValueChange(onNormalizeCoords(poses[0].keypoints[6].y));
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      if (webcamera?.readyState === 4) getPosesForCoords(webcamera);
+    const intervalId = setInterval(() => {
+      if (video.readyState === 4) getPosesForCoords();
     }, TICK * 2);
 
-    return () => clearInterval(IntervalId);
-  }, [detector, isReadyForDetection, onAiValueChange]);
+    return () => clearInterval(intervalId);
+  }, [video, detector, isReadyForDetection, onAiValueChange]);
 
   useEffect(() => {
-    const initialiseVideoPlaying = async () => {
-      setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
-    };
-    if (isCameraEnabled) initialiseVideoPlaying();
+    if (isCameraEnabled) {
+      const initializeVideoPlaying = async () => {
+        setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
+      };
+
+      initializeVideoPlaying();
+    } else {
+      setVideoStream(null);
+    }
   }, [isCameraEnabled]);
 
   useEffect(() => {
-    return () => {
-      if (!isCameraEnabled || videoStream) videoStream?.getTracks().forEach((track) => track.stop());
-    };
-  }, [isCameraEnabled, videoStream]);
+    if (!videoStream) return;
+    return () => videoStream.getTracks().forEach((track) => track.stop());
+  }, [videoStream]);
 
   useEffect(() => {
-    const startMoveNet = async () => {
-      setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, DETECTED_CONFIG));
-    };
-    if (isCameraEnabled) startMoveNet();
+    if (isCameraEnabled) {
+      const startMoveNet = async () => {
+        setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, DETECTED_CONFIG));
+      };
+
+      startMoveNet();
+    } else {
+      setDetector(null);
+    }
   }, [isCameraEnabled]);
+
+  useEffect(() => {
+    if (!detector) return;
+    return () => detector.dispose();
+  }, [detector]);
+
   return (
-    <div className={isCameraEnabled ? 'webcamera-wrapper' : '.webcamera-wrapper .disabled'}>
-      {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
+    <div className={`webcam-wrapper ${isCameraEnabled ? 'disabled' : ''}`}>
+      {isCameraEnabled && <video ref={setVideoElement} />}
     </div>
   );
 };

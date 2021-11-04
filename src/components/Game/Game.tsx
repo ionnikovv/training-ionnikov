@@ -22,7 +22,6 @@ const generateObstacle = (): ObstacleEntity => {
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [aiValue, setAiValue] = useState<number>(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
@@ -75,12 +74,12 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     };
   }, [handleJump, handleBack, paused, isGameSessionStarted, isCameraEnabled]);
 
-  useEffect(() => {
+  const handleAiJump = (aiValue: number) => {
     if (!handleJump || !handleBack || !isGameSessionStarted || paused || !isCameraEnabled) return;
     if (aiValue >= -3) handleJump();
     else handleBack();
     if (aiValue <= -90) handleBack();
-  }, [handleBack, handleJump, aiValue, isGameSessionStarted, paused, isCameraEnabled]);
+  };
 
   useEffect(() => {
     if (paused) return;
@@ -148,7 +147,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         </div>
 
         <div className='webcam-wrapper'>
-          <Camera isPaused={paused} onAiValueChange={setAiValue} isCameraEnabled={isCameraEnabled} />
+          <Camera isPaused={paused} onAiValueChange={handleAiJump} isCameraEnabled={isCameraEnabled} />
 
           <div className='features-wrapper'>
             <span className='checkbox-wrapper'>
