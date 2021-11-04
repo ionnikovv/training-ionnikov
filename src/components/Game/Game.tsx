@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { TICK } from '../../ConstantValues/ConstValues';
-import { useJumpAi } from '../../Hooks/useJumpAI';
 import { useJump } from '../../Hooks/useJump';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
@@ -23,18 +22,17 @@ const generateObstacle = (): ObstacleEntity => {
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
-  const [aiValue, setAiValue] = useState(0);
+  const [aiValue, setAiValue] = useState<number>(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
 
-  const { handleBack, handleJump } =
-    useJump({
-      onChangePlayerCoord: setPlayerCoord,
-      isPaused: paused,
-    }) ?? {};
+  const { handleBack, handleJump } = useJump({
+    onChangePlayerCoord: setPlayerCoord,
+    isPaused: paused,
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -77,7 +75,12 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     };
   }, [handleJump, handleBack, paused, isGameSessionStarted, isCameraEnabled]);
 
-  useJumpAi({ handleBack, handleJump, aiValue, isGameSessionStarted, paused, isCameraEnabled });
+  useEffect(() => {
+    if (!handleJump || !handleBack || !isGameSessionStarted || paused || !isCameraEnabled) return;
+    if (aiValue >= -3) handleJump();
+    else handleBack();
+    if (aiValue <= -90) handleBack();
+  }, [handleBack, handleJump, aiValue, isGameSessionStarted, paused, isCameraEnabled]);
 
   useEffect(() => {
     if (paused) return;

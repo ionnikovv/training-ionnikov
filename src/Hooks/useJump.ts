@@ -9,7 +9,7 @@ type Props = {
 
 export const useJump = ({ onChangePlayerCoord, isPaused }: Props): jumpCallbacks => {
   const jumpProgressRef = useRef(0);
-  const [callbacks, setCallbacks] = useState<jumpCallbacks>(null);
+  const [callbacks, setCallbacks] = useState<jumpCallbacks>({});
 
   useEffect(() => {
     let intervalId: number | null = null;

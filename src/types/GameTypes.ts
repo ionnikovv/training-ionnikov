@@ -3,7 +3,8 @@ export type Obstacle = {
   x: number;
   y: number;
 };
-export type jumpCallbacks = Record<'handleJump' | 'handleBack', () => void> | null;
+export type jumpCallbacks = Partial<Record<'handleJump' | 'handleBack', () => void>>;
+
 export type jumpCallbacksOpened = {
   handleJump: (() => void) | undefined;
   handleBack: (() => void) | undefined;
