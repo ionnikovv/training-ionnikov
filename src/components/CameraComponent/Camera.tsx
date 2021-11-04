@@ -96,8 +96,8 @@ export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): J
     const startMoveNet = async () => {
       setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, DETECTED_CONFIG));
     };
-    startMoveNet();
-  }, []);
+    if (isCameraEnabled) startMoveNet();
+  }, [isCameraEnabled]);
   return (
     <div className={isCameraEnabled ? 'webcamera-wrapper' : '.webcamera-wrapper .disabled'}>
       {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
