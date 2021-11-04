@@ -165,6 +165,15 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         <span>SCORE</span>
         <span>{score}</span>
       </div>
+      <div className='instructions-wrapper'>
+        <span>
+          If you switch the camera ON then controlling <span className='sub-instrunction'>will be using the AI.</span>
+        </span>
+        <span>
+          If you switch the camera OFF then controlling{' '}
+          <span className='sub-instrunction'>will be using the SPACEBAR</span>
+        </span>
+      </div>
       {!isGameSessionStarted && (
         <div className='btn-start-wrapper'>
           <button className='btn-start' onClick={() => setIsGameSessionStarted(true)}>

@@ -121,6 +121,21 @@
   padding: 1vmin;
   color: #f3d449;
 }
+.instructions-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 37%;
+  left: 32%;
+  top: 120%;
+  color: #f3d449;
+  position: absolute;
+  word-spacing: 2vmin;
+  text-align: center;
+}
+.sub-instrunction {
+  color: #000000;
+}
 @keyframes animatedBackground {
   from {
     background-position: 0 0;
