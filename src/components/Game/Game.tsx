@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TICK } from '../../ConstantValues/ConstValues';
-import { useJump } from '../../Hooks/useJumpOnKeyboard';
+import { useJumpKeyboad } from '../../Hooks/useJumpOnKeyboard';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
 import { Camera } from '../CameraComponent/Camera';
@@ -29,7 +29,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [paused, setPaused] = useState(false);
 
   const { handleBack, handleJump } =
-    useJump({
+    useJumpKeyboad({
       onChangePlayerCoord: setPlayerCoord,
       isPaused: paused,
       isGameStarted: isGameSessionStarted,
@@ -48,30 +48,28 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   }, [isGameSessionStarted]);
 
   useEffect(() => {
+    if (!isGameSessionStarted || paused) return;
     let intervalId: number | null = null;
-    if (!handleJump) return;
+    let returnIntervalId: number | null = null;
+    if (!handleJump || !handleBack) return;
+
     intervalId = setInterval(() => {
       document.addEventListener('keyup', handleJump);
     }, TICK) as unknown as null;
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-      intervalId = null;
-      document.removeEventListener('keyup', handleJump);
-    };
-  }, [handleJump]);
 
-  useEffect(() => {
-    let returnIntervalId: number | null = null;
-    if (!handleBack) return;
     returnIntervalId = setInterval(() => {
       document.addEventListener('keydown', handleBack);
     }, TICK) as unknown as null;
+
     return () => {
       if (returnIntervalId) clearInterval(returnIntervalId);
+      if (intervalId) clearInterval(intervalId);
       returnIntervalId = null;
+      intervalId = null;
       document.removeEventListener('keydown', handleBack);
+      document.removeEventListener('keyup', handleJump);
     };
-  }, [handleBack]);
+  }, [handleJump, handleBack, paused, isGameSessionStarted]);
 
   useEffect(() => {
     if (paused) return;

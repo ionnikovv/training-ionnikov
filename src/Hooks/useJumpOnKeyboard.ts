@@ -7,7 +7,7 @@ type Props = {
   onChangePlayerCoord: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const useJump = ({
+export const useJumpKeyboad = ({
   onChangePlayerCoord,
   isPaused,
   isGameStarted,
@@ -21,7 +21,7 @@ export const useJump = ({
     const step = Math.PI / 60;
     if (isPaused) return;
 
-    const handleJump = (event?: TouchEvent | Event | null | KeyboardEvent) => {
+    const handleJump = (event?: TouchEvent | null | KeyboardEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
         returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
@@ -49,7 +49,7 @@ export const useJump = ({
     if (!isPaused && jumpProgressRef.current > 0)
       returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
 
-    const handleBack = (event?: TouchEvent | Event | null | KeyboardEvent) => {
+    const handleBack = (event?: TouchEvent | null | KeyboardEvent) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!intervalId) {
         const handleIntervalBack = () => {
