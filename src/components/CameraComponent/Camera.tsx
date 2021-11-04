@@ -7,6 +7,7 @@ import { TICK } from '../../ConstantValues/ConstValues';
 type Props = {
   onAiValueChange: (newPlayerCoord: number) => void;
   isPaused: boolean;
+  isCameraEnabled: boolean;
 };
 
 const DETECTED_CONFIG = {
@@ -27,10 +28,10 @@ const VIDEO_CONFIG = {
 
 const estimationConfig = { flipHorizontal: true };
 
-export const Camera = ({ isPaused, onAiValueChange }: Props): JSX.Element => {
+export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): JSX.Element => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
-  const [isCameraEnabled, setIsCameraEnabled] = useState(true);
+
   const [detector, setDetector] = useState<poseDetection.PoseDetector | null>(null);
   const [isReadyForDetection, setIsReadyForDetection] = useState(false);
 
@@ -98,17 +99,8 @@ export const Camera = ({ isPaused, onAiValueChange }: Props): JSX.Element => {
     startMoveNet();
   }, []);
   return (
-    <div className='webcamera-wrapper'>
+    <div className={isCameraEnabled ? 'webcamera-wrapper' : '.webcamera-wrapper .disabled'}>
       {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
-      <div className='checkbox-wrapper'>
-        <input
-          type='checkbox'
-          onChange={() => setIsCameraEnabled(!isCameraEnabled)}
-          checked={isCameraEnabled}
-          className='checkboxOnOff'
-        />
-        {isCameraEnabled ? 'Camera ON' : 'Camera OFF'}
-      </div>
     </div>
   );
 };
