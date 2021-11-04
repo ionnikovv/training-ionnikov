@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { TICK } from '../ConstantValues/ConstValues';
+import { jumpCallbacks } from '../types/GameTypes';
 
 type Props = {
   isPaused: boolean;
   onChangePlayerCoord: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const useJumpKeyboad = ({
-  onChangePlayerCoord,
-  isPaused,
-}: Props): null | Record<'handleJump' | 'handleBack', () => void> => {
+export const useJump = ({ onChangePlayerCoord, isPaused }: Props): jumpCallbacks => {
   const jumpProgressRef = useRef(0);
-  const [callbacks, setCallbacks] = useState<null | Record<'handleJump' | 'handleBack', () => void>>(null);
+  const [callbacks, setCallbacks] = useState<jumpCallbacks>(null);
 
   useEffect(() => {
     let intervalId: number | null = null;

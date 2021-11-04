@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { TICK } from '../../ConstantValues/ConstValues';
-import { useJumpKeyboad } from '../../Hooks/useJumpOnKeyboard';
+import { useJumpAi } from '../../Hooks/useJumpAI';
+
+import { useJump } from '../../Hooks/useJump';
 import { ObstacleEntity } from '../../types/GameObstacle';
 import { PokemonsData } from '../../types/PokemonsData';
 import { Camera } from '../CameraComponent/Camera';
@@ -23,16 +25,20 @@ const generateObstacle = (): ObstacleEntity => {
 
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
+  const [aiValue, setAiValue] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
 
   const { handleBack, handleJump } =
-    useJumpKeyboad({
+    useJump({
       onChangePlayerCoord: setPlayerCoord,
       isPaused: paused,
     }) ?? {};
+
+  useJumpAi({ handleBack, handleJump, aiValue, isGameSessionStarted, paused });
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isGameSessionStarted) return;
@@ -140,7 +146,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         </div>
 
         <div className='webcam-wrapper'>
-          <Camera isPaused={paused} onPlayerCoordChange={setPlayerCoord} />
+          <Camera isPaused={paused} onAiValueChange={setAiValue} />
         </div>
       </div>
 

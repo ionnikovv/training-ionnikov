@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import '@tensorflow/tfjs-backend-webgl';
 import './Camera.css';
 import { TICK } from '../../ConstantValues/ConstValues';
 
 type Props = {
-  onPlayerCoordChange: (newPlayerCoord: number) => void;
+  onAiValueChange: (newPlayerCoord: number) => void;
   isPaused: boolean;
 };
 
@@ -27,7 +27,7 @@ const VIDEO_CONFIG = {
 
 const estimationConfig = { flipHorizontal: true };
 
-export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element => {
+export const Camera = ({ isPaused, onAiValueChange }: Props): JSX.Element => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
@@ -67,7 +67,7 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
         try {
           const poses = await detector?.estimatePoses(video, estimationConfig);
           if (!poses) return;
-          onPlayerCoordChange(onNormalizeCoords(poses[0].keypoints[6].y));
+          if (poses[0].keypoints[6].y !== undefined) onAiValueChange(onNormalizeCoords(poses[0].keypoints[6].y));
         } catch (e) {
           console.log(e);
         }
@@ -76,7 +76,7 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
     }, TICK * 2);
 
     return () => clearInterval(IntervalId);
-  }, [detector, isReadyForDetection, onPlayerCoordChange]);
+  }, [detector, isReadyForDetection, onAiValueChange]);
 
   useEffect(() => {
     const initialiseVideoPlaying = async () => {
@@ -92,12 +92,11 @@ export const Camera = ({ isPaused, onPlayerCoordChange }: Props): JSX.Element =>
   }, [isCameraEnabled, videoStream]);
 
   useEffect(() => {
-    const startBlazePose = async () => {
+    const startMoveNet = async () => {
       setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, DETECTED_CONFIG));
     };
-    startBlazePose();
+    startMoveNet();
   }, []);
-
   return (
     <div className='webcamera-wrapper'>
       {isCameraEnabled && <video ref={videoRef} className={'webcamera'} />}
