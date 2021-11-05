@@ -52,14 +52,13 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
   }, [videoStream, video]);
 
   useEffect(() => {
-    if (!isReadyForDetection || !video || !detector) return;
+    if (!video || !detector) return;
 
     const getPosesForCoords = async () => {
+      if (!isReadyForDetection) return;
       const poses = await detector.estimatePoses(video, estimationConfig);
       const shoulder = poses[0]?.keypoints[6];
-
       if (shoulder) onAiValueChange(onNormalizeCoords(shoulder.y));
-      console.log(shoulder);
     };
     const intervalId = setInterval(() => {
       if (video.readyState === 4) getPosesForCoords();
@@ -73,7 +72,12 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
       const initializeVideoPlaying = async () => {
         setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
       };
+      const startMoveNet = async () => {
+        setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, DETECTED_CONFIG));
+      };
+
       initializeVideoPlaying();
+      startMoveNet();
     } else {
       setVideoStream(null);
     }
@@ -85,18 +89,12 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
   }, [videoStream]);
 
   useEffect(() => {
-    if (isCameraEnabled) {
-      const startMoveNet = async () => {
-        setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, DETECTED_CONFIG));
-      };
-
-      startMoveNet();
-    }
-  }, [isCameraEnabled]);
-
-  useEffect(() => {
     if (!detector) return;
-    return () => detector.dispose();
+    return () => {
+      console.log('!!!!!');
+      detector.dispose();
+      setDetector(null);
+    };
   }, [detector]);
 
   return (
