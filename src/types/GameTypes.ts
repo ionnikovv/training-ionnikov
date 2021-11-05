@@ -6,6 +6,6 @@ export type Obstacle = {
 export type jumpCallbacks = Partial<Record<'handleJump' | 'handleBack', () => void>>;
 
 export type jumpCallbacksOpened = {
-  handleJump: (() => void) | undefined;
-  handleBack: (() => void) | undefined;
+  handleJump?: () => void;
+  handleBack?: () => void;
 };

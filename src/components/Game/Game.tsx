@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TICK } from '../../ConstantValues/ConstValues';
 import { useJump } from '../../Hooks/useJump';
 import { ObstacleEntity } from '../../types/GameObstacle';
-import { PokemonsData } from '../../types/PokemonsData';
+import { PokemonsData as PokemonData } from '../../types/PokemonsData';
 import { Camera } from '../CameraComponent/Camera';
 import './Game.css';
 import { GameObstacle } from './Obstacle/GameObstacle';
@@ -11,7 +11,7 @@ import { Player } from './Player/Player';
 let ObstacleID = 1;
 
 type Props = {
-  pokemonPlayer: PokemonsData | undefined;
+  pokemonPlayer: PokemonData | undefined;
 };
 
 const generateObstacle = (): ObstacleEntity => {
@@ -74,12 +74,14 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
     };
   }, [handleJump, handleBack, paused, isGameSessionStarted, isCameraEnabled]);
 
-  const handleAiJump = (aiValue: number) => {
-    if (!handleJump || !handleBack || !isGameSessionStarted || paused || !isCameraEnabled) return;
-    if (aiValue >= -3) handleJump();
-    else handleBack();
-    if (aiValue <= -90) handleBack();
-  };
+  const handleAiJump = useCallback(
+    (aiValue: number) => {
+      if (!handleJump || !handleBack || !isGameSessionStarted || paused) return;
+      if (aiValue >= -3) handleJump();
+      else handleBack();
+    },
+    [handleBack, handleJump, isGameSessionStarted, paused]
+  );
 
   useEffect(() => {
     if (paused) return;
@@ -147,8 +149,9 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
         </div>
 
         <div className='webcam-wrapper'>
-          <Camera isPaused={paused} onAiValueChange={handleAiJump} isCameraEnabled={isCameraEnabled} />
-
+          {isCameraEnabled && (
+            <Camera isPaused={paused} onAiValueChange={handleAiJump} isCameraEnabled={isCameraEnabled} />
+          )}
           <div className='features-wrapper'>
             <span className='checkbox-wrapper'>
               {isCameraEnabled ? 'Camera ON' : 'Camera OFF'}
@@ -169,11 +172,11 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       </div>
       <div className='instructions-wrapper'>
         <span>
-          If you switch the camera ON then controlling <span className='sub-instrunction'>will be using the AI.</span>
+          If you switch the camera ON then controlling <span className='sub-instruction'>will be using the AI.</span>
         </span>
         <span>
           If you switch the camera OFF then controlling{' '}
-          <span className='sub-instrunction'>will be using the SPACEBAR</span>
+          <span className='sub-instruction'>will be using the SPACEBAR</span>
         </span>
       </div>
       {!isGameSessionStarted && (

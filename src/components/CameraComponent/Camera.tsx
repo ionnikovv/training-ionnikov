@@ -28,10 +28,9 @@ const VIDEO_CONFIG = {
 
 const estimationConfig = { flipHorizontal: true };
 
-export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): JSX.Element => {
+export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element => {
   const [video, setVideoElement] = useState<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
-
   const [detector, setDetector] = useState<poseDetection.PoseDetector | null>(null);
   const [isReadyForDetection, setIsReadyForDetection] = useState(false);
 
@@ -43,40 +42,28 @@ export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): J
 
   useEffect(() => {
     if (!video || !videoStream) return;
-
     video.srcObject = videoStream;
-
     setIsReadyForDetection(false);
-    video.onplay = () => setIsReadyForDetection(true);
-
+    video.play();
+    setIsReadyForDetection(true);
     return () => {
       video.srcObject = null;
     };
-  }, [videoStream, video, isPaused]);
+  }, [videoStream, video]);
 
   useEffect(() => {
     if (!isReadyForDetection || !video || !detector) return;
 
-    let isDetecting = false;
-
     const getPosesForCoords = async () => {
-      if (isDetecting) return;
+      const poses = await detector.estimatePoses(video, estimationConfig);
+      const shoulder = poses[0]?.keypoints[6];
 
-      isDetecting = true;
-      try {
-        const poses = await detector.estimatePoses(video, estimationConfig);
-        const shoulder = poses[0]?.keypoints[6];
-        if (shoulder) onAiValueChange(onNormalizeCoords(shoulder.y));
-      } catch (e) {
-        console.log(e);
-      } finally {
-        isDetecting = false;
-      }
+      if (shoulder) onAiValueChange(onNormalizeCoords(shoulder.y));
+      console.log(shoulder);
     };
-
     const intervalId = setInterval(() => {
       if (video.readyState === 4) getPosesForCoords();
-    }, TICK * 2);
+    }, TICK);
 
     return () => clearInterval(intervalId);
   }, [video, detector, isReadyForDetection, onAiValueChange]);
@@ -86,7 +73,6 @@ export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): J
       const initializeVideoPlaying = async () => {
         setVideoStream(await navigator.mediaDevices.getUserMedia(VIDEO_CONFIG));
       };
-
       initializeVideoPlaying();
     } else {
       setVideoStream(null);
@@ -105,8 +91,6 @@ export const Camera = ({ isPaused, onAiValueChange, isCameraEnabled }: Props): J
       };
 
       startMoveNet();
-    } else {
-      setDetector(null);
     }
   }, [isCameraEnabled]);
 

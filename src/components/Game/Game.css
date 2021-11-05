@@ -92,8 +92,8 @@
   color: #ffd000;
 }
 .features-wrapper {
-  left: 75%;
-  top: 90%;
+  left: 20%;
+  top: 87%;
 
   position: absolute;
   width: 35vmin;
@@ -132,8 +132,9 @@
   position: absolute;
   word-spacing: 2vmin;
   text-align: center;
+  font-size: 3vmin;
 }
-.sub-instrunction {
+.sub-instruction {
   color: #000000;
 }
 @keyframes animatedBackground {
