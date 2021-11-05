@@ -91,7 +91,6 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
   useEffect(() => {
     if (!detector) return;
     return () => {
-      console.log('!!!!!');
       detector.dispose();
       setDetector(null);
     };
