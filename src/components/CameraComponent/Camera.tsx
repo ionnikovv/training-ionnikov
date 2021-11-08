@@ -44,7 +44,10 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
     if (!video || !videoStream) return;
     video.srcObject = videoStream;
     setIsReadyForDetection(false);
-    video.play();
+    const startVideoPlaying = async () => {
+      await video.play();
+    };
+    startVideoPlaying();
     setIsReadyForDetection(true);
     return () => {
       video.srcObject = null;
@@ -52,17 +55,16 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
   }, [videoStream, video]);
 
   useEffect(() => {
-    if (!video || !detector) return;
+    if (!video || !detector || !isReadyForDetection) return;
 
     const getPosesForCoords = async () => {
-      if (!isReadyForDetection) return;
       const poses = await detector.estimatePoses(video, estimationConfig);
       const shoulder = poses[0]?.keypoints[6];
       if (shoulder) onAiValueChange(onNormalizeCoords(shoulder.y));
     };
     const intervalId = setInterval(() => {
       if (video.readyState === 4) getPosesForCoords();
-    }, TICK);
+    }, TICK * 2);
 
     return () => clearInterval(intervalId);
   }, [video, detector, isReadyForDetection, onAiValueChange]);
@@ -92,13 +94,8 @@ export const Camera = ({ onAiValueChange, isCameraEnabled }: Props): JSX.Element
     if (!detector) return;
     return () => {
       detector.dispose();
-      setDetector(null);
     };
   }, [detector]);
 
-  return (
-    <div className={`webcam-wrapper ${isCameraEnabled ? 'disabled' : ''}`}>
-      {isCameraEnabled && <video ref={setVideoElement} />}
-    </div>
-  );
+  return <div className={'webcam-wrapper'}>{isCameraEnabled && <video ref={setVideoElement} />}</div>;
 };

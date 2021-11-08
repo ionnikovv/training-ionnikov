@@ -132,10 +132,16 @@
   position: absolute;
   word-spacing: 2vmin;
   text-align: center;
-  font-size: 3vmin;
+  font-size: 2.5vmin;
 }
 .sub-instruction {
   color: #000000;
+}
+.webcam-wrapper {
+  box-shadow: 0 2vmin 8vmin rgba(194, 0, 42, 0.496);
+}
+.webcam-wrapper.disabled {
+  box-shadow: none;
 }
 @keyframes animatedBackground {
   from {

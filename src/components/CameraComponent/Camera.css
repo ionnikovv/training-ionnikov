@@ -11,7 +11,3 @@
   align-self: center;
   flex-direction: column;
 }
-
-.webcam-wrapper.disabled {
-  box-shadow: 0 2vmin 8vmin rgb(59, 69, 158);
-}

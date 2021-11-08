@@ -148,7 +148,7 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
           )}
         </div>
 
-        <div className='webcam-wrapper'>
+        <div className={`webcam-wrapper ${!isCameraEnabled ? 'disabled' : ''}`}>
           {isCameraEnabled && (
             <Camera isPaused={paused} onAiValueChange={handleAiJump} isCameraEnabled={isCameraEnabled} />
           )}

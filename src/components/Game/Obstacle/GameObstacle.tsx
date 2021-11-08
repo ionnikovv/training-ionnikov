@@ -5,6 +5,7 @@ type Props = ObstacleEntity;
 
 export const GameObstacle = ({ height, x }: Props): JSX.Element => {
   const convertToCssUnits = (valueToConvert: number): string | undefined => `${valueToConvert}%`;
+
   const ObstacleTransition = {
     left: convertToCssUnits(x),
     height: convertToCssUnits(height),

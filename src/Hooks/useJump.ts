@@ -20,7 +20,7 @@ export const useJump = ({ onChangePlayerCoord, isPaused }: Props): jumpCallbacks
     const handleJump = (event?: (TouchEvent | KeyboardEvent) | null) => {
       if (event instanceof KeyboardEvent && event.key !== ' ') return;
       if (!returnIntervalId) {
-        returnIntervalId = setInterval(handleIntervalJump, TICK) as unknown as number;
+        returnIntervalId = setInterval(handleIntervalJump, TICK / 2) as unknown as number;
         handleIntervalJump();
         if (intervalId) clearInterval(intervalId);
       }
@@ -62,7 +62,7 @@ export const useJump = ({ onChangePlayerCoord, isPaused }: Props): jumpCallbacks
           onChangePlayerCoord(Math.floor(coord * -100));
           jumpProgressRef.current += step;
         };
-        intervalId = setInterval(handleIntervalBack, TICK) as unknown as number;
+        intervalId = setInterval(handleIntervalBack, TICK / 2) as unknown as number;
         handleIntervalBack();
       }
     };
