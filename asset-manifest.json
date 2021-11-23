@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/training-ionnikov/static/css/main.71b1a119.chunk.css",
-    "main.js": "/training-ionnikov/static/js/main.ceb339de.chunk.js",
-    "main.js.map": "/training-ionnikov/static/js/main.ceb339de.chunk.js.map",
-    "runtime-main.js": "/training-ionnikov/static/js/runtime-main.b7b3433d.js",
-    "runtime-main.js.map": "/training-ionnikov/static/js/runtime-main.b7b3433d.js.map",
-    "static/js/2.c965ed39.chunk.js": "/training-ionnikov/static/js/2.c965ed39.chunk.js",
-    "static/js/2.c965ed39.chunk.js.map": "/training-ionnikov/static/js/2.c965ed39.chunk.js.map",
-    "static/js/3.e0c170bc.chunk.js": "/training-ionnikov/static/js/3.e0c170bc.chunk.js",
-    "static/js/3.e0c170bc.chunk.js.map": "/training-ionnikov/static/js/3.e0c170bc.chunk.js.map",
+    "main.css": "/training-ionnikov/static/css/main.9904c99c.chunk.css",
+    "main.js": "/training-ionnikov/static/js/main.e0267d2f.chunk.js",
+    "main.js.map": "/training-ionnikov/static/js/main.e0267d2f.chunk.js.map",
+    "runtime-main.js": "/training-ionnikov/static/js/runtime-main.5487b46d.js",
+    "runtime-main.js.map": "/training-ionnikov/static/js/runtime-main.5487b46d.js.map",
+    "static/js/2.968668c2.chunk.js": "/training-ionnikov/static/js/2.968668c2.chunk.js",
+    "static/js/2.968668c2.chunk.js.map": "/training-ionnikov/static/js/2.968668c2.chunk.js.map",
+    "static/js/3.002e6ef9.chunk.js": "/training-ionnikov/static/js/3.002e6ef9.chunk.js",
+    "static/js/3.002e6ef9.chunk.js.map": "/training-ionnikov/static/js/3.002e6ef9.chunk.js.map",
     "index.html": "/training-ionnikov/index.html",
-    "static/css/main.71b1a119.chunk.css.map": "/training-ionnikov/static/css/main.71b1a119.chunk.css.map",
-    "static/js/2.c965ed39.chunk.js.LICENSE.txt": "/training-ionnikov/static/js/2.c965ed39.chunk.js.LICENSE.txt",
+    "static/css/main.9904c99c.chunk.css.map": "/training-ionnikov/static/css/main.9904c99c.chunk.css.map",
+    "static/js/2.968668c2.chunk.js.LICENSE.txt": "/training-ionnikov/static/js/2.968668c2.chunk.js.LICENSE.txt",
     "static/media/App.css": "/training-ionnikov/static/media/ARCADECLASSIC.8f36b955.TTF",
     "static/media/Obstacle.css": "/training-ionnikov/static/media/brick.24f128db.jpg",
     "static/media/Game.css": "/training-ionnikov/static/media/game-background.d91f2f1a.png",
     "static/media/three-dots.b98a8c76.svg": "/training-ionnikov/static/media/three-dots.b98a8c76.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.b7b3433d.js",
-    "static/js/2.c965ed39.chunk.js",
-    "static/css/main.71b1a119.chunk.css",
-    "static/js/main.ceb339de.chunk.js"
+    "static/js/runtime-main.5487b46d.js",
+    "static/js/2.968668c2.chunk.js",
+    "static/css/main.9904c99c.chunk.css",
+    "static/js/main.e0267d2f.chunk.js"
   ]
 }
