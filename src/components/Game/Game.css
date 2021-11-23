@@ -91,7 +91,58 @@
   border: 0.5vmin solid #ffd000;
   color: #ffd000;
 }
+.features-wrapper {
+  left: 20%;
+  top: 87%;
 
+  position: absolute;
+  width: 35vmin;
+  height: 5vmin;
+  font-size: 3vmin;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.checkboxOnOff {
+  font-size: 15vmin;
+  position: relative;
+  width: 2.5vmin;
+  height: 2.5vmin;
+}
+.checkbox-wrapper {
+  margin-top: 1vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  word-spacing: 1vmin;
+  width: 100%;
+  font-size: 3vmin;
+  padding: 1vmin;
+  color: #f3d449;
+}
+.instructions-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 37%;
+  left: 32%;
+  top: 120%;
+  color: #f3d449;
+  position: absolute;
+  word-spacing: 2vmin;
+  text-align: center;
+  font-size: 2.5vmin;
+}
+.sub-instruction {
+  color: #000000;
+}
+.webcam-wrapper {
+  box-shadow: 0 2vmin 8vmin rgba(194, 0, 42, 0.496);
+}
+.webcam-wrapper.disabled {
+  box-shadow: none;
+}
 @keyframes animatedBackground {
   from {
     background-position: 0 0;

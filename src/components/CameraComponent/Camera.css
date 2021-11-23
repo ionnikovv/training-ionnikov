@@ -1,0 +1,13 @@
+.webcam-wrapper {
+  left: 79%;
+  top: 25%;
+  position: fixed;
+  width: 35vmin;
+  height: 35vmin;
+  color: inherit;
+
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  flex-direction: column;
+}

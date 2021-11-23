@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TICK } from '../../ConstantValues/ConstValues';
+import { useJump } from '../../Hooks/useJump';
 import { ObstacleEntity } from '../../types/GameObstacle';
-import { PokemonsData } from '../../types/PokemonsData';
+import { PokemonsData as PokemonData } from '../../types/PokemonsData';
+import { Camera } from '../CameraComponent/Camera';
 import './Game.css';
 import { GameObstacle } from './Obstacle/GameObstacle';
 import { Player } from './Player/Player';
@@ -9,7 +11,7 @@ import { Player } from './Player/Player';
 let ObstacleID = 1;
 
 type Props = {
-  pokemonPlayer: PokemonsData | undefined;
+  pokemonPlayer: PokemonData | undefined;
 };
 
 const generateObstacle = (): ObstacleEntity => {
@@ -17,12 +19,19 @@ const generateObstacle = (): ObstacleEntity => {
   const y = Math.random() * (0 - 50) + 50;
   return { height, x: 100, y, id: ObstacleID++ };
 };
+
 export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
   const [playerCoord, setPlayerCoord] = useState(0);
   const [obstacles, setObstacles] = useState<ObstacleEntity[]>([]);
   const [isGameSessionStarted, setIsGameSessionStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [isCameraEnabled, setIsCameraEnabled] = useState(true);
+
+  const { handleBack, handleJump } = useJump({
+    onChangePlayerCoord: setPlayerCoord,
+    isPaused: paused,
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -36,6 +45,43 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       clearInterval(intervalId);
     };
   }, [isGameSessionStarted]);
+
+  useEffect(() => {
+    if (!isGameSessionStarted || paused || isCameraEnabled) return;
+    let intervalId: number | null = null;
+    let returnIntervalId: number | null = null;
+    if (!handleJump || !handleBack) return;
+
+    intervalId = setInterval(() => {
+      document.addEventListener('keyup', handleJump);
+      document.addEventListener('touchend', handleJump);
+    }, TICK) as unknown as null;
+
+    returnIntervalId = setInterval(() => {
+      document.addEventListener('keydown', handleBack);
+      document.addEventListener('touchstart', handleBack);
+    }, TICK) as unknown as null;
+
+    return () => {
+      if (returnIntervalId) clearInterval(returnIntervalId);
+      if (intervalId) clearInterval(intervalId);
+      returnIntervalId = null;
+      intervalId = null;
+      document.removeEventListener('keydown', handleBack);
+      document.removeEventListener('touchstart', handleJump);
+      document.removeEventListener('touchend', handleJump);
+      document.removeEventListener('keyup', handleJump);
+    };
+  }, [handleJump, handleBack, paused, isGameSessionStarted, isCameraEnabled]);
+
+  const handleAiJump = useCallback(
+    (aiValue: number) => {
+      if (!handleJump || !handleBack || !isGameSessionStarted || paused) return;
+      if (aiValue >= -3) handleJump();
+      else handleBack();
+    },
+    [handleBack, handleJump, isGameSessionStarted, paused]
+  );
 
   useEffect(() => {
     if (paused) return;
@@ -74,21 +120,15 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
       clearInterval(IntervalId);
     };
   }, [paused, isGameSessionStarted]);
+
   return (
     <div className='main-game-wrapper'>
-      <div className='btn-pause-wrapper'></div>
       <div className='game-wrapper'>
         <span className='game-logo'>RUN! {pokemonPlayer?.name}! RUN!</span>
         <div className='game-block-container'>
           <div className={isGameSessionStarted ? (!paused ? 'game-block animated' : 'game-block') : 'game-block'}>
             <div className='game-field'>
-              <Player
-                isGameStarted={isGameSessionStarted}
-                isPaused={paused}
-                pokemonUrl={pokemonPlayer?.url}
-                playerCoord={playerCoord}
-                onChangePlayerCoord={setPlayerCoord}
-              />
+              <Player pokemonUrl={pokemonPlayer?.url} playerCoord={playerCoord} />
               {obstacles.map((obstacle, index) => (
                 <GameObstacle {...obstacle} key={index} />
               ))}
@@ -107,10 +147,37 @@ export const Game = ({ pokemonPlayer }: Props): JSX.Element => {
             </div>
           )}
         </div>
+
+        <div className={`webcam-wrapper ${!isCameraEnabled ? 'disabled' : ''}`}>
+          {isCameraEnabled && (
+            <Camera isPaused={paused} onAiValueChange={handleAiJump} isCameraEnabled={isCameraEnabled} />
+          )}
+          <div className='features-wrapper'>
+            <span className='checkbox-wrapper'>
+              {isCameraEnabled ? 'Camera ON' : 'Camera OFF'}
+              <input
+                type='checkbox'
+                onChange={() => setIsCameraEnabled(!isCameraEnabled)}
+                checked={isCameraEnabled}
+                className='checkboxOnOff'
+              />
+            </span>
+          </div>
+        </div>
       </div>
+
       <div className='game-score'>
         <span>SCORE</span>
         <span>{score}</span>
+      </div>
+      <div className='instructions-wrapper'>
+        <span>
+          If you switch the camera ON then controlling <span className='sub-instruction'>will be using the AI.</span>
+        </span>
+        <span>
+          If you switch the camera OFF then controlling{' '}
+          <span className='sub-instruction'>will be using the SPACEBAR</span>
+        </span>
       </div>
       {!isGameSessionStarted && (
         <div className='btn-start-wrapper'>
